@@ -107,7 +107,7 @@ DL_StringBuffer_insert
         size_t index
     )
 {
-    if (!stringBuffer || !bytes || index >= stringBuffer->size)
+    if (!stringBuffer || !bytes || index > stringBuffer->size)
     {
         DL_Context_raiseError(context, DL_Status_InvalidArgument);
     }

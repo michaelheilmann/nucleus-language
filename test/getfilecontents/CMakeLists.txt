@@ -6,6 +6,7 @@ cmake_minimum_required (VERSION 3.8)
 
 # Project.
 project(DL.Test.getFileContents C)
+message("building DL.Test.getFileContents")
 
 if (NUCLEUS_PATH)
   include(${NUCLEUS_PATH}/buildsystem/detect_compiler_and_platform.cmake)

@@ -27,6 +27,9 @@ _CPack_Packages
 # GNU Make.
 Makefile
 
+# GCC.
+*.stackdump
+
 # CMake/Visual Studio.
 **/x64/Debug
 **/x64/MinSizeRel

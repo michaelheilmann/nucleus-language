@@ -13,7 +13,7 @@ struct DL_ScratchSpace
 {
     DL_ScratchSpace *next;
     size_t numberOfBytes;
-    char *bytes;
+    char bytes[];
 };
 
 typedef struct DL_JumpTarget DL_JumpTarget;
@@ -123,4 +123,10 @@ DL_Context_createString
         DL_Context *context,
         const char *bytes,
         size_t numberOfBytes
+    );
+
+DL_NonNull() DL_Status
+DL_Context_getStatus
+    (
+        DL_Context *context
     );

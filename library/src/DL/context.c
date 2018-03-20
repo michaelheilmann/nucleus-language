@@ -34,15 +34,9 @@ DL_ScratchSpace_create
 {
     if (!scratchSpace)
     { return DL_Status_InvalidArgument; }
-    DL_ScratchSpace *temporary = malloc(sizeof(DL_ScratchSpace));
+    DL_ScratchSpace *temporary = malloc(sizeof(DL_ScratchSpace) + numberOfBytes);
     if (!temporary)
     { return DL_Status_AllocationFailed; }
-    temporary->bytes = malloc(sizeof(char) * (numberOfBytes > 0 ? numberOfBytes : 1));
-    if (temporary->bytes)
-    {
-        free(temporary);
-        return DL_Status_AllocationFailed;
-    }
     temporary->numberOfBytes = numberOfBytes;
     *scratchSpace = temporary;
     return DL_Status_Success;
@@ -54,7 +48,6 @@ DL_ScratchSpace_destroy
         DL_ScratchSpace *scratchSpace
     )
 {
-    free(scratchSpace->bytes);
     free(scratchSpace);
 }
 
@@ -93,7 +86,7 @@ DL_Context_initialize
     }
 
     DL_Context_pushJumpTarget(context, &jt);
-    if (setjmp(jt.environment))
+    if (!setjmp(jt.environment))
     {
         DL_Parser_initialize(context, &context->parser, &context->scanner);
         DL_Context_popJumpTarget(context);
@@ -185,17 +178,16 @@ DL_Context_acquireScratchSpace
         {
             DL_Context_raiseError(context, status);
         }
-        return ((char *)scratchSpace) + sizeof(DL_ScratchSpace);
     }
     if (scratchSpace->numberOfBytes < numberOfBytes)
     {
-        char *newBytes = realloc(scratchSpace->bytes, sizeof(char) * numberOfBytes);
-        if (!newBytes)
+        char *newScratchSpace = realloc(scratchSpace, sizeof(DL_ScratchSpace) + sizeof(char) * numberOfBytes);
+        if (!newScratchSpace)
         {
             scratchSpace->next = context->scratchSpaces; context->scratchSpaces = scratchSpace;
             DL_Context_raiseError(context, DL_Status_AllocationFailed);
         }
-        scratchSpace->bytes = newBytes;
+        scratchSpace = newScratchSpace;
         scratchSpace->numberOfBytes = numberOfBytes;
     }
     return ((char *)scratchSpace) + sizeof(DL_ScratchSpace);
@@ -268,3 +260,11 @@ DL_Context_createString
 {
     return DL_StringTable_getOrCreateString(context, &context->stringTable, bytes, numberOfBytes);
 }
+
+DL_NonNull() DL_Status
+DL_Context_getStatus
+    (
+        DL_Context *context
+    )
+{ return context->status; }
+
