@@ -63,7 +63,7 @@ DL_Context_fileContentsToStringBuffer
     ctxt.context = context;
     ctxt.stringBuffer = stringBuffer;
     Nucleus_getFileContentsExtendedCallbackFunction *cb = &Callback;
-    DL_Status status = (DL_Status)Nucleus_getFileContentsExtended(p, &ctxt, &cb);
+    DL_Status status = (DL_Status)Nucleus_getFileContentsExtended(p, &ctxt, cb);
     DL_Context_relinquishScratchSpace(context, p);
     if (status)
     {
@@ -131,15 +131,19 @@ static DL_Status test()
     DL_Context_pushJumpTarget(context, &jt);
     if (!setjmp(jt.environment))
     {
-        DL_String *contents = DL_Context_getFileContentsToString(context, DL_Context_createString(context, "data/helloworld.txt",
-                                                                                                  strlen("data/helloworld.txt")));
+        DL_String *contents = DL_Context_fileContentsToString(context, DL_Context_createString(context, "data/helloworld.txt",
+                                                                                               strlen("data/helloworld.txt")));
+        DL_String *reference = DL_Context_createString(context, "Hello, World!\r\n", strlen("Hello, World!\r\n"));
+        UnitTest_AssertTrue(context, DL_String_equal(context, contents, reference));
         DL_Context_popJumpTarget(context);
     }
+    status = DL_Context_getStatus(context);
     DL_Context_destroy(context);
     return status;
 }
 
 int main(int argc, char **argv)
 {
-    return EXIT_SUCCESS;
+    if (test()) { return EXIT_FAILURE; }
+    else { return EXIT_SUCCESS; }
 }

@@ -5,8 +5,8 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Project.
-project(DL.Test.Context C)
-message("building DL.Test.Context")
+project(DL.Test.String C)
+message("building DL.Test.String")
 
 if (NUCLEUS_PATH)
   include(${NUCLEUS_PATH}/buildsystem/detect_compiler_and_platform.cmake)
@@ -24,8 +24,8 @@ file(GLOB_RECURSE SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.c")
 file(GLOB_RECURSE HEADER_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.h")
 set_source_files_properties(${HEADER_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
 # Add and configure executable.
-add_executable(DL.Test.Context-Executable ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(DL.Test.Context-Executable dl-library)
+add_executable(DL.Test.String-Executable ${SOURCE_FILES} ${HEADER_FILES})
+target_link_libraries(DL.Test.String-Executable dl-library)
 
 # Test.
-add_test(NAME DL.Test.Context-Executable COMMAND $<TARGET_FILE:DL.Test.Context-Executable> WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME DL.Test.String COMMAND $<TARGET_FILE:DL.Test.String-Executable> WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
