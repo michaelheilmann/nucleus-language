@@ -5,8 +5,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Project.
-project (Nucleus.DataLanguage.Library C)
-message("building Nucleus.DataLanguage.Library")
+project (Nucleus.Language.Library C)
 
 if (NUCLEUS_PATH)
   include(${NUCLEUS_PATH}/buildsystem/detect_compiler_and_platform.cmake)
@@ -24,14 +23,14 @@ file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.c")
 file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.h")
 set_source_files_properties(${HEADER_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
 # Define and configure the library.
-add_library(Nucleus.DataLanguage.Library STATIC ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(Nucleus.DataLanguage.Library Nucleus.Language.Library)
-target_include_directories(Nucleus.DataLanguage.Library PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
-target_include_directories(Nucleus.DataLanguage.Library INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+add_library(Nucleus.Language.Library STATIC ${SOURCE_FILES} ${HEADER_FILES})
+target_link_libraries(Nucleus.Language.Library Nucleus.Library)
+target_include_directories(Nucleus.Language.Library PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_include_directories(Nucleus.Language.Library INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 
 IF(DOXYGEN_FOUND)
-    ADD_CUSTOM_TARGET(Nucleus.DataLanguage.Library.Documentation ${DOXYGEN_EXECUTABLE} COMMENT "Building documentation")
+    ADD_CUSTOM_TARGET(Nucleus.Language.Library.Documentation ${DOXYGEN_EXECUTABLE} COMMENT "Building documentation")
 ELSE(DOXYGEN_FOUND)
     MESSAGE(STATUS "Doxygen not found. You won't be able to build documentation.")
 ENDIF(DOXYGEN_FOUND)
