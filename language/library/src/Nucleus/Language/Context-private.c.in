@@ -1,0 +1,79 @@
+#include "Nucleus/Language/Context-private.h.in"
+
+Nucleus_Language_NonNull() static Nucleus_Language_ScratchSpace *
+Nucleus_Language_ScratchSpace_create
+    (
+        Nucleus_Language_Context *context,
+        size_t numberOfBytes
+    )
+{
+    Nucleus_Language_ScratchSpace *temporary = Nucleus_Language_Context_allocate(context, sizeof(Nucleus_Language_ScratchSpace) + numberOfBytes);
+    temporary->numberOfBytes = numberOfBytes;
+    return temporary;
+}
+
+Nucleus_Language_NonNull() static void
+Nucleus_Language_ScratchSpace_destroy
+    (
+        Nucleus_Language_Context *context,
+        Nucleus_Language_ScratchSpace *scratchSpace
+    )
+{ Nucleus_Language_Context_deallocate(context, scratchSpace); }
+
+Nucleus_Language_NoError() static Nucleus_Language_Status
+Nucleus_Language_Context_initialize
+    (
+        Nucleus_Language_Context *context
+    )
+{
+    if (!context) return Nucleus_Language_Status_InvalidArgument;
+    Nucleus_Language_FeatureLevelOne_Context *super = NUCLEUS_LANGUAGE_FEATURELEVELONE_CONTEXT(context);
+    Nucleus_Language_Status status = Nucleus_Language_FeatureLevelOne_Context_initialize(super);
+    if (status) return status;
+
+    context->scratchSpaces = NULL;
+
+    Nucleus_Language_ErrorHandler eh1;
+    Nucleus_Language_FeatureLevelOne_Context_pushErrorHandler(super, &eh1);
+    if (!setjmp(eh1.environment))
+    {
+        Nucleus_Language_StringHeap_initialize(super, &context->stringHeap);
+        Nucleus_Language_ErrorHandler eh2;
+        Nucleus_Language_FeatureLevelOne_Context_pushErrorHandler(super, &eh2);
+        if (!setjmp(eh2.environment))
+        {
+            Nucleus_Language_GeneralHeap_initialize(super, &context->generalHeap);
+            Nucleus_Language_FeatureLevelOne_Context_popErrorHandler(super);
+        }
+        else
+        {
+            Nucleus_Language_FeatureLevelOne_Context_popErrorHandler(super);
+            Nucleus_Language_FeatureLevelOne_Heap_uninitialize(super, NUCLEUS_LANGUAGE_FEATURELEVELONE_HEAP(&context->stringHeap));
+            Nucleus_Language_FeatureLevelOne_Context_raiseError(super, super->status);
+        }
+        Nucleus_Language_FeatureLevelOne_Context_popErrorHandler(super);
+    }
+    else
+    {
+        Nucleus_Language_FeatureLevelOne_Context_popErrorHandler(super);
+        return super->status;
+    }
+    return Nucleus_Language_Status_Success;
+}
+
+Nucleus_Language_NoError() static void
+Nucleus_Language_Context_uninitialize
+    (
+        Nucleus_Language_Context *context
+    )
+{
+    Nucleus_Language_FeatureLevelOne_Context *super = NUCLEUS_LANGUAGE_FEATURELEVELONE_CONTEXT(context);
+    Nucleus_Language_FeatureLevelOne_Heap_uninitialize(super, NUCLEUS_LANGUAGE_FEATURELEVELONE_HEAP(&context->generalHeap));
+    Nucleus_Language_FeatureLevelOne_Heap_uninitialize(super, NUCLEUS_LANGUAGE_FEATURELEVELONE_HEAP(&context->stringHeap));
+    while (context->scratchSpaces)
+    {
+        Nucleus_Language_ScratchSpace *scratchSpace = context->scratchSpaces; context->scratchSpaces = scratchSpace->next;
+        Nucleus_Language_ScratchSpace_destroy(context, scratchSpace);
+    }
+    Nucleus_Language_FeatureLevelOne_Context_uninitialize(NUCLEUS_LANGUAGE_FEATURELEVELONE_CONTEXT(context));
+}
