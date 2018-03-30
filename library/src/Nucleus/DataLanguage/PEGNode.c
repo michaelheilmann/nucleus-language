@@ -1,9 +1,7 @@
 #include "Nucleus/DataLanguage/PEGNode.h"
 
-#include "Nucleus/Language.h"
-#include "Nucleus/DataLanguage/ScannerState.h"
+#include "Nucleus/DataLanguage/Scanner.h"
 #include "Nucleus/DataLanguage/Context.h"
-
 
 typedef enum DL_PEGNode_Kind DL_PEGNode_Kind;
 enum DL_PEGNode_Kind
@@ -157,64 +155,64 @@ DL_PEGNode_test
     (
         DL_Context *context,
         DL_PEGNode *self,
-        DL_ScannerState *scannerState
+        DL_Scanner *scanner
     )
 {
     switch (self->kind)
     {
         case DL_PEGNode_Kind_Terminal:
         {
-            DL_SourceLocation *s = DL_ScannerState_getSourceLocation(context, scannerState);
-            DL_Symbol symbol = DL_ScannerState_getSymbol(context, scannerState);
+            DL_SourceLocation *s = DL_Scanner_getSourceLocation(context, scanner);
+            DL_Symbol symbol = DL_Scanner_getSymbol(context, scanner);
             bool result = DL_Symbol_equal(context, self->terminal.symbol, symbol);
             if (!result)
             {
-                DL_ScannerState_setSourceLocation(context, scannerState, s);
+                DL_Scanner_setSourceLocation(context, scanner, s);
             }
             return result;
         }
         case DL_PEGNode_Kind_TerminalRange:
         {
-            DL_SourceLocation *s = DL_ScannerState_getSourceLocation(context, scannerState);
-            DL_Symbol symbol = DL_ScannerState_getSymbol(context, scannerState);
+            DL_SourceLocation *s = DL_Scanner_getSourceLocation(context, scanner);
+            DL_Symbol symbol = DL_Scanner_getSymbol(context, scanner);
             bool result = DL_Symbol_lowerOrEqual(context, self->terminalRange.first, symbol)
                        && DL_Symbol_lowerOrEqual(context, symbol, self->terminalRange.last);
             if (!result)
             {
-                DL_ScannerState_setSourceLocation(context, scannerState, s);
+                DL_Scanner_setSourceLocation(context, scanner, s);
             }
             return result;
         }
         case DL_PEGNode_Kind_OrderedChoice:
-            return DL_PEGNode_test(context, self->orderedChoice.left, scannerState)
-                || DL_PEGNode_test(context, self->orderedChoice.right, scannerState);
+            return DL_PEGNode_test(context, self->orderedChoice.left, scanner)
+                || DL_PEGNode_test(context, self->orderedChoice.right, scanner);
         case DL_PEGNode_Kind_Difference:
         {
-            DL_SourceLocation *s = DL_ScannerState_getSourceLocation(context, scannerState);
+            DL_SourceLocation *s = DL_Scanner_getSourceLocation(context, scanner);
 
-            DL_Symbol symbol = DL_ScannerState_getSymbol(context, scannerState);
+            DL_Symbol symbol = DL_Scanner_getSymbol(context, scanner);
             bool result;
-            result = DL_PEGNode_test(context, self->difference.minuend, scannerState);
+            result = DL_PEGNode_test(context, self->difference.minuend, scanner);
             if (!result)
             {
                 // the failing minuend has restored the state already
                 return false;
             }
             // backup the state after succeeding minuend
-            DL_SourceLocation *s2 = DL_ScannerState_getSourceLocation(context, scannerState);
+            DL_SourceLocation *s2 = DL_Scanner_getSourceLocation(context, scanner);
             
             // restore before state before succeeding minuend
-            DL_ScannerState_setSourceLocation(context, scannerState, s);
+            DL_Scanner_setSourceLocation(context, scanner, s);
             
-            result = DL_PEGNode_test(context, self->difference.subtrahend, scannerState);
+            result = DL_PEGNode_test(context, self->difference.subtrahend, scanner);
             if (result)
             {
                 // restore state before succeeding minuend
-                DL_ScannerState_setSourceLocation(context, scannerState, s);
+                DL_Scanner_setSourceLocation(context, scanner, s);
                 return false;
             }
             // minuend succeeded, subtrahend failed, restore state after minuend
-            DL_ScannerState_setSourceLocation(context, scannerState, s2);
+            DL_Scanner_setSourceLocation(context, scanner, s2);
             return true;
         }
         default:

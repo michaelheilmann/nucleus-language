@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Nucleus/DataLanguage/Import-Annotations.h"
+#include "Nucleus/Interpreter/String.h"
 
 // Forward declration.
 typedef struct DL_Context DL_Context;
 
 // Import.
-typedef Nucleus_Language_String DL_String;
+typedef Nucleus_Interpreter_String DL_String;
 
 // Import.
 DL_ReturnNonNull() DL_NonNull() DL_String *

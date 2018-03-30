@@ -1,0 +1,27 @@
+#include "Nucleus/Interpreter/Context-private.h.in"
+
+Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_ScratchSpace *
+Nucleus_Interpreter_ScratchSpace_create
+    (
+        Nucleus_Interpreter_Context *context,
+        size_t numberOfBytes
+    )
+{
+    Nucleus_Interpreter_ScratchSpace *temporary =
+        Nucleus_Interpreter_CoreContext_allocate
+            (
+                NUCLEUS_INTERPRETER_CORECONTEXT(context),
+                sizeof(Nucleus_Interpreter_ScratchSpace) +
+                numberOfBytes
+            );
+    temporary->numberOfBytes = numberOfBytes;
+    return temporary;
+}
+
+Nucleus_Interpreter_NonNull() static void
+Nucleus_Interpreter_ScratchSpace_destroy
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_ScratchSpace *scratchSpace
+    )
+{ Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context), scratchSpace); }

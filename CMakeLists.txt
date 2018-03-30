@@ -19,6 +19,9 @@ include(${NUCLEUS_PATH}/buildsystem/set_default_project_properties.cmake)
 # Add module "Nucleus".
 add_subdirectory(${NUCLEUS_PATH})
 
+# Add module "Nucleus.Interpreter".
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/interpreter)
+
 # Add module "Nucleus.Language".
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/language)
 

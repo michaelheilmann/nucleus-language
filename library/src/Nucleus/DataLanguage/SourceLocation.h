@@ -6,7 +6,6 @@ struct DL_SourceLocation
 {
     DL_Object __parent;
     DL_Source *source;
-    int lineNumber;
     size_t offset;
 }; // struct DL_SourceLocation
 
@@ -16,7 +15,6 @@ DL_SourceLocation_create
     (
         DL_Context *context,
         DL_Source *source,
-        int lineNumber,
         size_t offset
     );
 
