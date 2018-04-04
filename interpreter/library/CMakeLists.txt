@@ -80,13 +80,52 @@ add_custom_command(
     VERBATIM
 )
 
+# The Unicode codepoints file.
+set(SOURCE_FILENAME "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/UnicodeCodePoints.l")
+
+# Define, configure, and invoke tool to generate
+# "${CMAKE_CURRENT_SOURCE_DIR}/Nucleus/Interpreter/UnicodeSymbols.h"
+# from
+# "${CMAKE_CURRENT_SOURCE_DIR}/Nucleus/Interpreter/UnicodeSymbols.l"
+set(TARGET_HEADER_FILENAME "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/UnicodeCodePoints.h")
+add_custom_command(
+    OUTPUT
+        ${TARGET_HEADER_FILENAME}
+    DEPENDS
+        ${SOURCE_FILENAME} Nucleus.Interpreter.Tools.Unicode
+    COMMAND
+        Nucleus.Interpreter.Tools.Unicode --generator=Header --prefix=Nucleus_Interpreter_ ${SOURCE_FILENAME} ${TARGET_HEADER_FILENAME}
+    COMMENT
+        "Generating ${TARGET_HEADER_FILENAME} from ${SOURCE_FILENAME}"
+    VERBATIM
+)
+
+# Define, configure, and invoke tool to generate
+# "${CMAKE_CURRENT_SOURCE_DIR}/Nucleus/Interpreter/UnicodeSymbols.i"
+# from
+# "${CMAKE_CURRENT_SOURCE_DIR}/Nucleus/Interpreter/UnicodeSymbols.l"
+set(TARGET_INLAY_FILENAME "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/UnicodeCodePoints.i")
+add_custom_command(
+    OUTPUT
+        ${TARGET_INLAY_FILENAME}
+    DEPENDS
+        ${SOURCE_FILENAME} Nucleus.Interpreter.Tools.Unicode
+    COMMAND
+        Nucleus.Interpreter.Tools.Unicode --generator=Inlay --prefix= ${SOURCE_FILENAME} ${TARGET_INLAY_FILENAME}
+    COMMENT
+        "Generating ${TARGET_INLAY_FILENAME} from ${SOURCE_FILENAME}"
+    VERBATIM
+)
+
 # Find and configure source files.
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.c")
 # Find and configure header files.
 file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.h")
 list(APPEND HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/TaggedValue.h"
                          "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/Value.h"
-                         "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/Tag.h")
+                         "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/Tag.h"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/UnicodeCodePoints.h"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/src/Nucleus/Interpreter/UnicodeCodePoints.i")
 set_source_files_properties(${HEADER_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
 # Define and configure the library.
 add_library(Nucleus.Interpreter.Library STATIC ${SOURCE_FILES} ${HEADER_FILES})

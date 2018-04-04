@@ -6,33 +6,33 @@
 
 #define MAX_LINES (5012)
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 build
     (
-        DL_Context *context,
-        DL_String *source,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *source,
         size_t **lines,
         size_t *numberOfLines
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initialize
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_LineMap *lineMap,
-        DL_String *source
+        Nucleus_DataLanguage_String *source
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 build
     (
-        DL_Context *context,
-        DL_String *source,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *source,
         size_t **lines,
         size_t *numberOfLines
     )
 {
-    if (!source || !lines || !numberOfLines) DL_Context_raiseError(context, DL_Status_AllocationFailed);
+    if (!source || !lines || !numberOfLines) Nucleus_DataLanguage_Context_raiseError(context, Nucleus_DataLanguage_Status_AllocationFailed);
     // Regardless of wether the file is empty, there is one source line (with line index 0) with start offset 0.
     // That is, the number of lines is always greater than or equal to 1.
     
@@ -40,51 +40,51 @@ build
     Nucleus_Status status;
     
     status = Nucleus_allocateArrayMemory((void **)&lines0, MAX_LINES, sizeof(size_t));
-    if (status) DL_Context_raiseError(context, DL_Status_AllocationFailed);
+    if (status) Nucleus_DataLanguage_Context_raiseError(context, Nucleus_DataLanguage_Status_AllocationFailed);
     lines0[0] = 0;
     size_t lineIndex = 0; // The index of the first line.
-    DL_JumpTarget jt;
-    DL_Context_pushJumpTarget(context, &jt);
+    Nucleus_DataLanguage_JumpTarget jt;
+    Nucleus_DataLanguage_Context_pushJumpTarget(context, &jt);
     if (!setjmp(jt.environment))
     {
-        const DL_Symbol carriageReturn = DL_Symbol_carriageReturn(context),
-            lineFeed = DL_Symbol_lineFeed(context),
-            end = DL_Symbol_end(context);
+        const Nucleus_DataLanguage_Symbol carriageReturn = Nucleus_DataLanguage_Symbol_carriageReturn(context),
+            lineFeed = Nucleus_DataLanguage_Symbol_lineFeed(context),
+            end = Nucleus_DataLanguage_Symbol_end(context);
 
-        DL_StringIterator *sourceIterator = DL_StringIterator_create(context, source);
-        DL_StringIterator_increment(context, sourceIterator);
+        Nucleus_DataLanguage_StringIterator *sourceIterator = Nucleus_DataLanguage_StringIterator_create(context, source);
+        Nucleus_DataLanguage_StringIterator_increment(context, sourceIterator);
 
-        DL_Symbol currentSymbol = DL_StringIterator_get(context, sourceIterator);
-        while (DL_Symbol_notEqual(context, end, currentSymbol))
+        Nucleus_DataLanguage_Symbol currentSymbol = Nucleus_DataLanguage_StringIterator_get(context, sourceIterator);
+        while (Nucleus_DataLanguage_Symbol_notEqualTo(context, end, currentSymbol))
         {
             // '\r', '\n', '\r\n'
-            if (DL_Symbol_equal(context, carriageReturn, currentSymbol) ||
-                DL_Symbol_equal(context, lineFeed, currentSymbol))
+            if (Nucleus_DataLanguage_Symbol_equalTo(context, carriageReturn, currentSymbol) ||
+                Nucleus_DataLanguage_Symbol_equalTo(context, lineFeed, currentSymbol))
             {
-                DL_StringIterator_increment(context, sourceIterator);
+                Nucleus_DataLanguage_StringIterator_increment(context, sourceIterator);
 
-                DL_Symbol nextSymbol = DL_StringIterator_get(context, sourceIterator);
-                if (DL_Symbol_equal(context, carriageReturn, currentSymbol) &&
-                    DL_Symbol_equal(context, lineFeed, nextSymbol))
+                Nucleus_DataLanguage_Symbol nextSymbol = Nucleus_DataLanguage_StringIterator_get(context, sourceIterator);
+                if (Nucleus_DataLanguage_Symbol_equalTo(context, carriageReturn, currentSymbol) &&
+                    Nucleus_DataLanguage_Symbol_equalTo(context, lineFeed, nextSymbol))
                 {
-                    DL_StringIterator_increment(context, sourceIterator);
-                    nextSymbol = DL_StringIterator_get(context, sourceIterator);
+                    Nucleus_DataLanguage_StringIterator_increment(context, sourceIterator);
+                    nextSymbol = Nucleus_DataLanguage_StringIterator_get(context, sourceIterator);
                 }
                 currentSymbol = nextSymbol;
                 lineIndex++;
-                lines0[lineIndex] = DL_StringIterator_getOffset(context, sourceIterator);
+                lines0[lineIndex] = Nucleus_DataLanguage_StringIterator_getOffset(context, sourceIterator);
             }
             else
             {
-                DL_StringIterator_increment(context, sourceIterator);
-                currentSymbol = DL_StringIterator_get(context, sourceIterator);
+                Nucleus_DataLanguage_StringIterator_increment(context, sourceIterator);
+                currentSymbol = Nucleus_DataLanguage_StringIterator_get(context, sourceIterator);
             }
         }
-        DL_Context_popJumpTarget(context);
+        Nucleus_DataLanguage_Context_popJumpTarget(context);
     } else {
-        DL_Context_popJumpTarget(context);
+        Nucleus_DataLanguage_Context_popJumpTarget(context);
         Nucleus_deallocateMemory(lines0);
-        DL_Context_raiseError(context, DL_Context_getStatus(context));
+        Nucleus_DataLanguage_Context_raiseError(context, Nucleus_DataLanguage_Context_getStatus(context));
     }
     // Regardless of wether the file is empty or not,
     // there is always
@@ -92,36 +92,36 @@ build
     if (status)
     {
         Nucleus_deallocateMemory(lines0);
-        DL_Context_raiseError(context, DL_Status_AllocationFailed);
+        Nucleus_DataLanguage_Context_raiseError(context, Nucleus_DataLanguage_Status_AllocationFailed);
     }
     *lines = lines0;
     *numberOfLines = lineIndex+1;
 }
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initialize
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_LineMap *lineMap,
-        DL_String *source
+        Nucleus_DataLanguage_String *source
     )
 {
     lineMap->source = source;
     build(context, source, &lineMap->lines, &lineMap->numberOfLines);
 }
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 visit
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_LineMap *lineMap
     )
 {}
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 finalize
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_LineMap *lineMap
     )
 {
@@ -129,24 +129,24 @@ finalize
     lineMap->lines = NULL;
 }
 
-DL_NonNull() DL_LineMap *
+Nucleus_DataLanguage_NonNull() DL_LineMap *
 DL_LineMap_create
     (
-        DL_Context *context,
-        DL_String *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *source
     )
 {
-    DL_LineMap *self = (DL_LineMap *)DL_Context_allocateObject(context, sizeof(DL_LineMap));
+    DL_LineMap *self = (DL_LineMap *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_LineMap));
     initialize(context, self, source);
-    ((DL_Object *)(self))->finalize = (DL_Visit *)&finalize;
-    ((DL_Object *)(self))->visit = (DL_Visit *)&visit;
+    ((Nucleus_DataLanguage_HeapObject *)(self))->finalize = (Nucleus_DataLanguage_HeapObject_Visit *)&finalize;
+    ((Nucleus_DataLanguage_HeapObject *)(self))->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
     return self;
 }
 
-DL_NonNull() size_t
+Nucleus_DataLanguage_NonNull() size_t
 DL_LineMap_getLineIndex
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_LineMap *lineMap,
         size_t offset
     )

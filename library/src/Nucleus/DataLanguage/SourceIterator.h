@@ -5,68 +5,68 @@
 #include "Nucleus/DataLanguage/Forward.h"
 #include "Nucleus/DataLanguage/SourceLocation.h"
 
-DL_NonNull() DL_SourceIterator *
-DL_SourceIterator_create
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceIterator *
+Nucleus_DataLanguage_SourceIterator_create
     (
-        DL_Context *context
+        Nucleus_DataLanguage_Context *context
     );
 
-DL_NonNull() DL_Source *
-DL_SourceIterator_getSource
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
+Nucleus_DataLanguage_SourceIterator_getSource
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator
     );
 
-DL_NonNull() void
-DL_SourceIterator_setSource
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_SourceIterator_setSource
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator,
-        DL_Source *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator,
+        Nucleus_DataLanguage_Source *source
     );
 
-DL_NonNull() DL_SourceLocation *
-DL_SourceIterator_getSourceLocation
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
+Nucleus_DataLanguage_SourceIterator_getSourceLocation
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator
     );
 
-DL_NonNull() void
-DL_SourceIterator_setSourceLocation
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_SourceIterator_setSourceLocation
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator,
-        DL_SourceLocation *sourceLocation
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator,
+        Nucleus_DataLanguage_SourceLocation *sourceLocation
     );
 
-DL_NonNull() void
-DL_SourceIterator_increment
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_SourceIterator_increment
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator
     );
 
-DL_NonNull() void
-DL_SourceIterator_decrement
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_SourceIterator_decrement
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator
     );
 
-DL_NonNull() DL_Symbol
-DL_SourceIterator_getSymbol
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Symbol
+Nucleus_DataLanguage_SourceIterator_getSymbol
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator
     );
 
-DL_NonNull() DL_String *
-DL_SourceIterator_getLexeme
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_String *
+Nucleus_DataLanguage_SourceIterator_getLexeme
     (
-        DL_Context *context,
-        DL_SourceIterator *sourceIterator,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *sourceIterator,
         size_t begin,
         size_t length
     );

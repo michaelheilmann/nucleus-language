@@ -6,10 +6,13 @@
 #include "Nucleus/DataLanguage/PEGNode.h"
 #include "Nucleus/DataLanguage/Context.h"
 
-struct DL_Scanner
+struct Nucleus_DataLanguage_Scanner
 {
-    DL_Object _parent;
-    DL_SourceIterator *sourceIterator;
+    Nucleus_DataLanguage_HeapObject _parent;
+    Nucleus_DataLanguage_SourceIterator *sourceIterator;
+
+    bool skipComments;
+
     DL_PEGNode *underscore;
     
     DL_PEGNode *lineFeed;
@@ -20,7 +23,9 @@ struct DL_Scanner
     DL_PEGNode *characterTabulation;
     DL_PEGNode *whiteSpace; /* WhiteSpace : Space / characterTabulation */
 
+    DL_PEGNode *begin;
     DL_PEGNode *end;
+
     DL_PEGNode *plusSign;
     DL_PEGNode *hyphenMinus;
     DL_PEGNode *listOpeningDelimiter;
@@ -42,68 +47,69 @@ struct DL_Scanner
     DL_PEGNode *exponentIndicator;
 };
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initialize
     (
-        DL_Context *context,
-        DL_Scanner *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *self,
+        bool skipComments
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 visit
     (
-        DL_Context *context,
-        DL_Scanner *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *self
     );
 
-DL_ReturnNonNull() DL_NonNull() static DL_String *
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_String *
 processStringLiteral
     (
-        DL_Context *context,
-        DL_String *stringLiteral
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *stringLiteral
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 increment
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() static DL_Symbol
+Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_Symbol
 current
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() static bool
+Nucleus_DataLanguage_NonNull() static bool
 test
     (
-        DL_Context *context,
-        DL_Scanner *scanner,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner,
         DL_PEGNode *pegNode
     );
 
-DL_NonNull() static DL_String *
+Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_String *
 getLexeme
     (
-        DL_Context *context,
-        DL_Scanner *scanner,
-        DL_SourceLocation *begin,
-        DL_SourceLocation *end
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner,
+        Nucleus_DataLanguage_SourceLocation *begin,
+        Nucleus_DataLanguage_SourceLocation *end
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 scanExponent
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() static DL_Token *
+Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_Token *
 scan
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );

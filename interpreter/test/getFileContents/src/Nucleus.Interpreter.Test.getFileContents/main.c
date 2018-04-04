@@ -18,8 +18,8 @@ test
     Nucleus_Interpreter_String *reference = Nucleus_Interpreter_String_create(context,
                                                                               "Hello, World!\r\n",
                                                                               strlen("Hello, World!\r\n"));
-    Nucleus_Interpreter_UnitTest_AssertTrue(context, Nucleus_Interpreter_String_equal(context,
-                                                                                      contents, reference));
+    Nucleus_Interpreter_UnitTest_AssertTrue(context, Nucleus_Interpreter_String_equalTo(context,
+                                                                                        contents, reference));
 }
 
 int main(int argc, char **argv)

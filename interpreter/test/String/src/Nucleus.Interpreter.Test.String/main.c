@@ -11,7 +11,7 @@ test
 {
     Nucleus_Interpreter_String *x = Nucleus_Interpreter_String_create(context,
                                                                       "Hello, World\n", strlen("Hello, World!\n"));
-    Nucleus_Interpreter_UnitTest_AssertTrue(context, Nucleus_Interpreter_String_equal(context, x, x));
+    Nucleus_Interpreter_UnitTest_AssertTrue(context, Nucleus_Interpreter_String_equalTo(context, x, x));
 }
 
 int main(int argc, char **argv)

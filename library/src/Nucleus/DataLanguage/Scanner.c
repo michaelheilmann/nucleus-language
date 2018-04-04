@@ -1,71 +1,72 @@
 #include "Nucleus/DataLanguage/Scanner-private.c.i"
 
-DL_NonNull() DL_Scanner *
-DL_Scanner_create
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Scanner *
+Nucleus_DataLanguage_Scanner_create
     (
-        DL_Context *context
+        Nucleus_DataLanguage_Context *context,
+        bool skipComments
     )
 {
-    DL_Scanner *self = (DL_Scanner *)DL_Context_allocateObject(context, sizeof(DL_Scanner));
-    initialize(context, self);
-    ((DL_Object *)(self))->visit = (DL_Visit *)&visit;
+    Nucleus_DataLanguage_Scanner *self = (Nucleus_DataLanguage_Scanner *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Scanner));
+    initialize(context, self, skipComments);
+    ((Nucleus_DataLanguage_HeapObject *)(self))->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
     return self;
 }
 
-DL_NonNull() DL_Token *
-DL_Scanner_scan
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Token *
+Nucleus_DataLanguage_Scanner_scan
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     )
 { return scan(context, scanner); }
 
-DL_NonNull() DL_Source *
-DL_Scanner_getSource
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
+Nucleus_DataLanguage_Scanner_getSource
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     )
-{ return DL_SourceIterator_getSource(context, scanner->sourceIterator); }
+{ return Nucleus_DataLanguage_SourceIterator_getSource(context, scanner->sourceIterator); }
 
-DL_NonNull() void
-DL_Scanner_setSource
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Scanner_setSource
     (
-        DL_Context *context,
-        DL_Scanner *scanner,
-        DL_Source *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner,
+        Nucleus_DataLanguage_Source *source
     )
-{ DL_SourceIterator_setSource(context, scanner->sourceIterator, source); }
+{ Nucleus_DataLanguage_SourceIterator_setSource(context, scanner->sourceIterator, source); }
 
-DL_NonNull() DL_SourceLocation *
-DL_Scanner_getSourceLocation
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
+Nucleus_DataLanguage_Scanner_getSourceLocation
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     )
-{ return DL_SourceIterator_getSourceLocation(context, scanner->sourceIterator); }
+{ return Nucleus_DataLanguage_SourceIterator_getSourceLocation(context, scanner->sourceIterator); }
 
-DL_NonNull() void
-DL_Scanner_setSourceLocation
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Scanner_setSourceLocation
     (
-        DL_Context *context,
-        DL_Scanner *scanner,
-        DL_SourceLocation *sourceLocation
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner,
+        Nucleus_DataLanguage_SourceLocation *sourceLocation
     )
-{ DL_SourceIterator_setSourceLocation(context, scanner->sourceIterator, sourceLocation); }
+{ Nucleus_DataLanguage_SourceIterator_setSourceLocation(context, scanner->sourceIterator, sourceLocation); }
 
-DL_NonNull() DL_Symbol
-DL_Scanner_getSymbol
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Symbol
+Nucleus_DataLanguage_Scanner_getSymbol
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     )
-{ return DL_SourceIterator_getSymbol(context, scanner->sourceIterator); }
+{ return Nucleus_DataLanguage_SourceIterator_getSymbol(context, scanner->sourceIterator); }
 
-DL_NonNull() void
-DL_Scanner_increment
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Scanner_increment
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     )
-{ DL_SourceIterator_increment(context, scanner->sourceIterator); }
+{ Nucleus_DataLanguage_SourceIterator_increment(context, scanner->sourceIterator); }

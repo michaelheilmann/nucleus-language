@@ -5,23 +5,23 @@
 
 struct DL_LineMap
 {
-    DL_Object __parent;
-    DL_String *source;
+    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_String *source;
     size_t numberOfLines;
     size_t *lines; // zero-based line index to offset of start of line
 };
 
-DL_NonNull() DL_LineMap *
+Nucleus_DataLanguage_NonNull() DL_LineMap *
 DL_LineMap_create
     (
-        DL_Context *context,
-        DL_String *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *source
     );
 
-DL_NonNull() size_t
+Nucleus_DataLanguage_NonNull() size_t
 DL_LineMap_getLineIndex
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_LineMap *lineMap,
         size_t offset
     );

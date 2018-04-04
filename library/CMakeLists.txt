@@ -28,7 +28,7 @@ file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.i")
 set_source_files_properties(${INLAY_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
 # Define and configure the library.
 add_library(Nucleus.DataLanguage.Library STATIC ${SOURCE_FILES} ${HEADER_FILES} ${INLAY_FILES})
-target_link_libraries(Nucleus.DataLanguage.Library Nucleus.Language.Library)
+target_link_libraries(Nucleus.DataLanguage.Library Nucleus.Interpreter.Library)
 target_include_directories(Nucleus.DataLanguage.Library PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_include_directories(Nucleus.DataLanguage.Library INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 

@@ -69,6 +69,24 @@ Nucleus_Interpreter_Symbol_lowerThanOrEqualTo
     )
 { return x.value <= y.value; }
 
+Nucleus_Interpreter_NonNull() bool
+Nucleus_Interpreter_Symbol_greaterThan
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_Symbol x,
+        Nucleus_Interpreter_Symbol y
+    )
+{ return x.value > y.value; }
+
+Nucleus_Interpreter_NonNull() bool
+Nucleus_Interpreter_Symbol_greaterThanOrEqualTo
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_Symbol x,
+        Nucleus_Interpreter_Symbol y
+    )
+{ return x.value >= y.value; }
+
 Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Symbol
 Nucleus_Interpreter_Symbol_begin
     (

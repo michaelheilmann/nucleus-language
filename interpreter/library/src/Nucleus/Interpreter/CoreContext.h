@@ -38,7 +38,7 @@ struct Nucleus_Interpreter_CoreContext
 /// @brief Initialize this @a (Nucleus_Interpreter_CoreContext) object.
 /// @param context a pointer to an uninitialized @a (Nucleus_Interpreter_CoreContext) object
 /// @return #Nucleus_Interpreter_Status_Success on success, a non-zero status code on success
-Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
 Nucleus_Interpreter_CoreContext_initialize
     (
         Nucleus_Interpreter_CoreContext *context
@@ -48,7 +48,7 @@ Nucleus_Interpreter_CoreContext_initialize
 /// @internal
 /// @brief Uninitialize this @a (Nucleus_Interpreter_CoreContext) object.
 /// @param context a pointer to an initialized @a (Nucleus_Interpreter_CoreContext) object
-Nucleus_Interpreter_NonNull() void
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_uninitialize
     (
         Nucleus_Interpreter_CoreContext *context
@@ -59,7 +59,7 @@ Nucleus_Interpreter_CoreContext_uninitialize
 /// @brief Push a jump target on the top of the stack of jump targets of a @a (Nucleus_Interpreter_CoreContext).
 /// @param context a pointer to the @a (Nucleus_Interpreter_CoreContext) object
 /// @param errorHandler a pointer to the @a (Nucleus_Interpreter_JumpTarget) object
-Nucleus_Interpreter_NoError() void
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_pushJumpTarget
     (
         Nucleus_Interpreter_CoreContext *context,
@@ -71,7 +71,7 @@ Nucleus_Interpreter_CoreContext_pushJumpTarget
 /// @brief Pop a jump target from the stack of jump targets of a @a (Nucleus_Interpreter_CoreContext).
 /// @param context a pointer to the @a (Nucleus_Interpreter_CoreContext) object
 /// @undefined the error handler stack of the @a (Nucleus_Interpreter_CoreContext) object is empty
-Nucleus_Interpreter_NoError() void
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_popJumpTarget
     (
         Nucleus_Interpreter_CoreContext *context
@@ -140,7 +140,7 @@ Nucleus_Interpreter_CoreContext_deallocate
         void *memoryBlock
     );
 
-Nucleus_Interpreter_NonNull() void
+Nucleus_Interpreter_NoReturn() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_jump
     (
         Nucleus_Interpreter_CoreContext *context

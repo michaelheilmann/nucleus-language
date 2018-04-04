@@ -4,3 +4,5 @@ Value.h
 Value.c
 TaggedValue.c
 TaggedValue.h
+UnicodeCodePoints.h
+UnicodeCodePoints.i

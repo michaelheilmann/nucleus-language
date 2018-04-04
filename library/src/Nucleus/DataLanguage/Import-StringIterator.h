@@ -1,62 +1,62 @@
 #pragma once
 
 #include "Nucleus/DataLanguage/Import-Symbol.h"
-#include "Nucleus/DataLanguage/Import-String.h"
+#include "Nucleus/DataLanguage/Import-Boolean.h"
 #include "Nucleus/Interpreter/StringIterator.h"
 
 // Forward declaration.
-typedef struct DL_Context DL_Context;
+typedef struct Nucleus_DataLanguage_Context Nucleus_DataLanguage_Context;
 
 // Import.
-typedef Nucleus_Interpreter_StringIterator DL_StringIterator;
+typedef Nucleus_Interpreter_StringIterator Nucleus_DataLanguage_StringIterator;
 
 // Import.
-DL_ReturnNonNull() DL_NonNull() DL_StringIterator *
-DL_StringIterator_create
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_StringIterator *
+Nucleus_DataLanguage_StringIterator_create
     (
-        DL_Context *context,
-        DL_String *string
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *string
     );
 
-DL_NonNull() void
-DL_StringIterator_setInput
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringIterator_setInput
     (
-        DL_Context *context,
-        DL_StringIterator *stringIterator,
-        DL_String *string
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringIterator *stringIterator,
+        Nucleus_DataLanguage_String *string
     );
 
-DL_ReturnNonNull() DL_NonNull() DL_String *
-DL_StringIterator_getInput
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_String *
+Nucleus_DataLanguage_StringIterator_getInput
     (
-        DL_Context *context,
-        DL_StringIterator *stringIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringIterator *stringIterator
     );
 
-DL_NonNull() size_t
-DL_StringIterator_getOffset
+Nucleus_DataLanguage_NonNull() size_t
+Nucleus_DataLanguage_StringIterator_getOffset
     (
-        DL_Context *context,
-        DL_StringIterator *stringIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringIterator *stringIterator
     );
 
-DL_NonNull() DL_Symbol
-DL_StringIterator_get
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Symbol
+Nucleus_DataLanguage_StringIterator_get
     (
-        DL_Context *context,
-        DL_StringIterator *stringIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringIterator *stringIterator
     );
 
-DL_NonNull() void
-DL_StringIterator_increment
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringIterator_increment
     (
-        DL_Context *context,
-        DL_StringIterator *stringIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringIterator *stringIterator
     );
 
-DL_NonNull() void
-DL_StringIterator_decrement
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringIterator_decrement
     (
-        DL_Context *context,
-        DL_StringIterator *stringIterator
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringIterator *stringIterator
     );

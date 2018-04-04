@@ -2,78 +2,78 @@
 
 #include "Nucleus/DataLanguage/Context.h"
 
-DL_NonNull() void
-DL_StringBuffer_initialize
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringBuffer_initialize
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer,
         size_t initialCapacity
     )
 { Nucleus_Interpreter_StringBuffer_initialize(context->context, stringBuffer, initialCapacity); }
 
-DL_NonNull() void
-DL_StringBuffer_uninitialize
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringBuffer_uninitialize
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer
     )
 { Nucleus_Interpreter_StringBuffer_uninitialize(context->context, stringBuffer); }
 
-DL_NonNull() void
-DL_StringBuffer_append
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringBuffer_append
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer,
         const char *bytes,
         size_t numberOfBytes
     )
 { Nucleus_Interpreter_StringBuffer_append(context->context, stringBuffer, bytes, numberOfBytes); }
 
-DL_NonNull() void
-DL_StringBuffer_clear
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringBuffer_clear
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer
     )
 { Nucleus_Interpreter_StringBuffer_clear(context->context, stringBuffer); }
 
-DL_ReturnNonNull() DL_NonNull() const char *
-DL_StringBuffer_getBytes
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() const char *
+Nucleus_DataLanguage_StringBuffer_getBytes
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer
     )
 { return Nucleus_Interpreter_StringBuffer_getBytes(context->context, stringBuffer); }
 
-DL_NonNull() size_t
-DL_StringBuffer_getSize
+Nucleus_DataLanguage_NonNull() size_t
+Nucleus_DataLanguage_StringBuffer_getSize
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer
     )
 { return Nucleus_Interpreter_StringBuffer_getSize(context->context, stringBuffer); }
 
-DL_NonNull() void
-DL_StringBuffer_ensureFreeCapacity
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_StringBuffer_ensureFreeCapacity
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer,
         size_t requiredFreeCapacity
     )
 { Nucleus_Interpreter_StringBuffer_ensureFreeCapacity(context->context, stringBuffer, requiredFreeCapacity); }
 
-DL_NonNull() size_t
-DL_StringBuffer_getCapacity
+Nucleus_DataLanguage_NonNull() size_t
+Nucleus_DataLanguage_StringBuffer_getCapacity
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer
     )
 { return Nucleus_Interpreter_StringBuffer_getCapacity(context->context, stringBuffer); }
 
-DL_NonNull() size_t
-DL_StringBuffer_getFreeCapacity
+Nucleus_DataLanguage_NonNull() size_t
+Nucleus_DataLanguage_StringBuffer_getFreeCapacity
     (
-        DL_Context *context,
-        DL_StringBuffer *stringBuffer
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_StringBuffer *stringBuffer
     )
 { return Nucleus_Interpreter_StringBuffer_getFreeCapacity(context->context, stringBuffer); }

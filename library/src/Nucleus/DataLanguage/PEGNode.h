@@ -4,41 +4,41 @@
 
 typedef struct DL_PEGNode DL_PEGNode;
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminal
     (
-        DL_Context *context,
-        DL_Symbol symbol
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Symbol symbol
     );
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminalRange
     (
-        DL_Context *context,
-        DL_Symbol first,
-        DL_Symbol last
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Symbol first,
+        Nucleus_DataLanguage_Symbol last
     );
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createOrderedChoice
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *left,
         DL_PEGNode *right
      );
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createDifference
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *minuend,
         DL_PEGNode *subtrahend
      );
 
-DL_NonNull() bool
+Nucleus_DataLanguage_NonNull() bool
 DL_PEGNode_test
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *self,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Scanner *scanner
     );

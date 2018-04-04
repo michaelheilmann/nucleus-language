@@ -101,6 +101,11 @@ typedef /* implementation details */ Nucleus_Interpreter_Real;
 #define Nucleus_Interpreter_Real_GreatestConstant /* implementation details */
 ```
 
+## `Nucleus_Interpreter_Void`
+The type `Nucleus_Interpreter_Void` is the C representation of the `Void` type.
+The symbolic constants `Nucleus_Interpreter_Void_VoidConstant` represents the single value `void` of the type `Void`.
+`void` is only equal to itself.
+
 | data specifier      | description |
 |---------------------|-------------|
 | `${Boolean}` | print a _`Boolean`_ value. A single argument is required, a `Nucleus_Interpreter_Boolean` value.     |

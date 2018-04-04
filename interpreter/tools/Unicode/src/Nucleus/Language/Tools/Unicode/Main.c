@@ -146,7 +146,7 @@ int main(int argc, char **argv)
         for (size_t i = 0, n = g_numberOfCodePoints; i < n; ++i)
         {
             const CodePoint *codePoint = &(g_codePoints[i]);
-            fprintf(target, "%sDEFINE(%s, %s, 0x%.4X)\n", prefixParameterValue,
+            fprintf(target, "%sDEFINE(%s, \"%s\", 0x%.4X)\n", prefixParameterValue,
                     codePoint->cname, codePoint->uname, codePoint->value);
         }
     }

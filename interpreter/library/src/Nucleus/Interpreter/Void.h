@@ -3,3 +3,8 @@
 #pragma once
 
 typedef struct Nucleus_Interpreter_Void { int dummy; } Nucleus_Interpreter_Void;
+
+Nucleus_Interpreter_Void
+Nucleus_Interpreter_Void_VoidConstant
+    (
+    );
