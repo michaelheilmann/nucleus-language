@@ -40,5 +40,5 @@ DL_PEGNode_test
     (
         DL_Context *context,
         DL_PEGNode *self,
-        DL_ScannerState *scannerState
+        DL_Scanner *scanner
     );

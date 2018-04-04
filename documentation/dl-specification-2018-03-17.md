@@ -88,42 +88,42 @@ Die Wörter der 6 strukturellen Zeichen sind folgende:
 
 Der öffnende Listenbegrenzer ist `[` (engl. left square bracket, dt. linke eckige Klammer, Unicode: `U+005B`)
 ```
-listOpeningDelimitier : '['
+ListOpeningDelimitier : '['
 ```
 Der schließende Listenbegrenzer ist `]` (engl. right square bracket, dt. rechte eckige Klammer, Unicode: `U+005D`)
 ```
-listClosingDelimiter : ']'
+ListClosingDelimiter : ']'
 ```
 Der öffnende Strukturbegrenzer ist `{` (engl. left curly bracket, dt. linke geschweifte Klammer, Unicode: `U+007B`)
 ```
-structureOpeningDelimiter : '{'
+StructureOpeningDelimiter : '{'
 ```
 Der schließende Strukturbegrenzer ist `}` (engl. right curly bracket, dt. rechte geschweifte Klammer, Unicode: `U+007D`)
 ```
-structureClosingDelimiter : '}'
+StructureClosingDelimiter : '}'
 ```
 Der Zuweisungsoperator (für Strukturelemente) ist `:` (engl. colon, dt. Doppelpunkt, Unicode: `U+003A`)
 ```
-colon : ':'
+Colon : ':'
 ```
 Das Trennzeichen (für Ausdrücke) ist `,` (engl. comma, dt. Komma, Unicode: `U+002C`)
 ```
-comma : ','
+Comma : ','
 ```
 
 #### Konstantenliterale
 Die Wörter der Literale, welche die Werte true, false, und null bezeichnen, sind folgende:
 Das "logisch falsch" Literal
 ```
-false : 'false'
+False : 'false'
 ```
-Der "logisch wahr" Literal
+Das "logisch wahr" Literal
 ```
-true : 'true'
+True : 'true'
 ```
 Das "null" Literal
 ```
-null : 'null'
+Null : 'null'
 ```
 
 #### Zeichenkettenliterale
@@ -131,11 +131,15 @@ Zeichenkettenliteral beginnen und enden mit `"` (engl. quotation mark, dt. Anfü
 Alle Unicodezeichen dürfen zwischen den Anführungszeichen plaziert werden, mit der Ausname der Zeichen, die eskapiert werden müssen.
 Diese sind `"` (engl. quotation mark, dt. Anführungszeichen, Unicode: `U+0022`), `\` (engl. reverse solidus, dt. umgekehrter Solidus, Unicode: `U+005C`), sowie die Kontrollzeichen (Unicode: von einschließlich `U+0000` bis einschließlich `U+001F`).
 
+```
+String
+```
+
 #### Zahlenliterale
 DL unterstützt Integerzahlen und Realzahlen.
 ```
-number : integer
-       | real
+Number : Integer
+       | Real
 ```
 
 Jede folge von Ziffern ist zur Basis 10 zu interpretieren.
@@ -239,14 +243,23 @@ Asterisk : '*' (engl. asterisk, dt. Asterisk, Unicode: U+002A)
 ## Syntaktische Spezifikation
 
 ```
-unit : structure
-     / list
+Unit : StructureExpression
+     / ListExpression
 ```
 
 ```
-structure : structureOpeningDelimiter structureBody structureClosingDelimiter
+StructureExpression : StructureOpeningDelimiter StructureBody StructureClosingDelimiter
+structureBody : (StructureElement (Comma StructureElement)* Comma?)?
+StructureElement : Name Colon Expression
 ```
 
 ```
-list : listOpeningDelimitier listBody listClosingDelimiter
+ListExpression : ListOpeningDelimitier ListBody ListClosingDelimiter
+ListBody : (ListElement (Comma ListElement)* Comma ?)?
+ListElement : Expression
+```
+
+```
+Expression: LiteralExpression / ListExpression / StructureExpression
+LiteralExpression : Number / String / True / False / Null
 ```

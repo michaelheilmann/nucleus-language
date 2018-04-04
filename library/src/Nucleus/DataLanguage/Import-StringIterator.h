@@ -2,12 +2,13 @@
 
 #include "Nucleus/DataLanguage/Import-Symbol.h"
 #include "Nucleus/DataLanguage/Import-String.h"
+#include "Nucleus/Interpreter/StringIterator.h"
 
 // Forward declaration.
 typedef struct DL_Context DL_Context;
 
 // Import.
-typedef Nucleus_Language_StringIterator DL_StringIterator;
+typedef Nucleus_Interpreter_StringIterator DL_StringIterator;
 
 // Import.
 DL_ReturnNonNull() DL_NonNull() DL_StringIterator *

@@ -1,10 +1,10 @@
 # @author Michael Heilmann
 # @copyright Copyright (c) Michael Heilmann 2017
 
-add_subdirectory(Context)
-add_subdirectory(getFileContents)
-add_subdirectory(setFileContents)
-add_subdirectory(String)
-add_subdirectory(StringIterator)
-add_subdirectory(StringBuffer)
-add_subdirectory(ScratchSpace)
+#add_subdirectory(Context)
+#add_subdirectory(getFileContents)
+#add_subdirectory(setFileContents)
+#add_subdirectory(String)
+#add_subdirectory(StringIterator)
+#add_subdirectory(StringBuffer)
+#add_subdirectory(ScratchSpace)

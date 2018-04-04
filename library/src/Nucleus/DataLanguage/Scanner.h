@@ -7,8 +7,7 @@ typedef struct DL_Scanner DL_Scanner;
 DL_NonNull() DL_Scanner *
 DL_Scanner_create
     (
-        DL_Context *context,
-        DL_ScannerState *scannerState
+        DL_Context *context
     );
 
 DL_NonNull() DL_Token *
@@ -33,15 +32,23 @@ DL_Scanner_setSource
         DL_Source *source
     );
 
-DL_NonNull() DL_Symbol
-DL_Scanner_getSymbol
+DL_NonNull() DL_SourceLocation *
+DL_Scanner_getSourceLocation
     (
         DL_Context *context,
         DL_Scanner *scanner
     );
 
 DL_NonNull() void
-DL_Scanner_incrementLineNumber
+DL_Scanner_setSourceLocation
+    (
+        DL_Context *context,
+        DL_Scanner *scanner,
+        DL_SourceLocation *sourceLocation
+    );
+
+DL_NonNull() DL_Symbol
+DL_Scanner_getSymbol
     (
         DL_Context *context,
         DL_Scanner *scanner

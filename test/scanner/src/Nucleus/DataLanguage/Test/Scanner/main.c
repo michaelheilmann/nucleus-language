@@ -245,15 +245,12 @@ test
 {
     DL_Context *context;
     DL_Status status = DL_Context_create(&context);
-    if (status) {
-        return status;
-    }
-    DL_ErrorHandler eh;
-    DL_Context_pushErrorHandler(context, &eh);
-    if (!setjmp(eh.environment))
+    if (status) { return status; }
+    DL_JumpTarget jt;
+    DL_Context_pushJumpTarget(context, &jt);
+    if (!setjmp(jt.environment))
     {
-        DL_ScannerState *scannerState = DL_ScannerState_create(context);
-        DL_Scanner *scanner = DL_Scanner_create(context, scannerState);
+        DL_Scanner *scanner = DL_Scanner_create(context);
         DL_String *pathnameString = DL_String_create(context, pathname,
                                                       strlen(pathname));
         DL_String *inputString = DL_Context_getFileContentsString(context, pathnameString);
@@ -263,7 +260,7 @@ test
         DL_Scanner_increment(context, scanner);
         (*test)(context, scanner);
     }
-    DL_Context_popErrorHandler(context);
+    DL_Context_popJumpTarget(context);
     status = DL_Context_getStatus(context);
     DL_Context_destroy(context);
     return status;

@@ -1,6 +1,7 @@
 #include "Nucleus/DataLanguage/Source.h"
 
 #include "Nucleus/DataLanguage/Context.h"
+#include "Nucleus/DataLanguage/LineMap.h"
 
 DL_NonNull() DL_Source *
 DL_Source_create
@@ -13,9 +14,7 @@ DL_Source_create
     DL_Source *self = (DL_Source *)DL_Context_allocateObject(context, sizeof(DL_Source));
     self->name = name;
     self->string = string;
-    self->begin = DL_String_getBytes(context, string);
-    self->end = DL_String_getBytes(context, string)
-              + DL_String_getNumberOfBytes(context, string);
+    self->lineMap = DL_LineMap_create(context, string);
     return self;
 }
 
@@ -35,16 +34,6 @@ DL_Source_getString
     )
 { return source->string; }
 
-DL_NonNull() const char *
-DL_Source_getBegin
-    (
-        DL_Context *context,
-        DL_Source *source
-    )
-{
-    DL_Context_assertNotNull(context, source);
-    return source->begin;
-}
 DL_NonNull() size_t
 DL_Source_getBeginOffset
     (
@@ -56,16 +45,6 @@ DL_Source_getBeginOffset
     return 0;
 }
 
-DL_NonNull() const char *
-DL_Source_getEnd
-    (
-        DL_Context *context,
-        DL_Source *source
-    )
-{
-    DL_Context_assertNotNull(context, source);
-    return source->end;
-}
 DL_NonNull() size_t
 DL_Source_getEndOffset
     (
@@ -74,21 +53,9 @@ DL_Source_getEndOffset
     )
 {
     DL_Context_assertNotNull(context, source);
-    return source->end - source->begin;
+    return DL_String_getNumberOfBytes(context, source->string);
 }
 
-DL_NonNull() const char *
-DL_Source_get
-    (
-        DL_Context *context,
-        DL_Source *source,
-        size_t index
-    )
-{
-    DL_Context_assertNotNull(context, source);
-    if (index >= DL_String_getNumberOfBytes(context, source->string)) DL_Context_raiseError(context, DL_Status_InvalidArgument);
-    return source->begin + index;
-}
 
 DL_NonNull() DL_Source *
 DL_Source_createDefault

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Nucleus/DataLanguage/Import-Annotations.h"
+#include "Nucleus/Interpreter/StringBuffer.h"
 
 // Forward declaration.
 typedef struct DL_Context DL_Context;
 
 // Import.
-typedef Nucleus_Language_StringBuffer DL_StringBuffer;
+typedef Nucleus_Interpreter_StringBuffer DL_StringBuffer;
 
 DL_NonNull() void
 DL_StringBuffer_initialize

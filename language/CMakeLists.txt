@@ -12,3 +12,6 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/library")
 
 # Add module "test".
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/test")
+
+# Add module "tools".
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/tools")

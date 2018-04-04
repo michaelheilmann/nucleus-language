@@ -11,13 +11,13 @@ Change the directory to the directory of this file.
 
 Enter
 ```
-cmake CMakeLists.txt -a Win32
+cmake -a Win32 CMakeLists.txt
 ```
 to generate the project files for Win32.
 
 Enter
 ```
-cmake CMakeLists.txt -a x64
+cmake -a x64 CMakeLists.txt
 ```
 to generate the project files for x64.
 
