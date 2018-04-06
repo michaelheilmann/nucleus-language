@@ -2,61 +2,62 @@
 
 #include "Nucleus/DataLanguage/Forward.h"
 
-typedef struct DL_Scanner DL_Scanner;
+typedef struct Nucleus_DataLanguage_Scanner Nucleus_DataLanguage_Scanner;
 
-DL_NonNull() DL_Scanner *
-DL_Scanner_create
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Scanner *
+Nucleus_DataLanguage_Scanner_create
     (
-        DL_Context *context
+        Nucleus_DataLanguage_Context *context,
+        bool skipComments
     );
 
-DL_NonNull() DL_Token *
-DL_Scanner_scan
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Token *
+Nucleus_DataLanguage_Scanner_scan
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() DL_Source *
-DL_Scanner_getSource
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
+Nucleus_DataLanguage_Scanner_getSource
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() void
-DL_Scanner_setSource
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Scanner_setSource
     (
-        DL_Context *context,
-        DL_Scanner *scanner,
-        DL_Source *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner,
+        Nucleus_DataLanguage_Source *source
     );
 
-DL_NonNull() DL_SourceLocation *
-DL_Scanner_getSourceLocation
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
+Nucleus_DataLanguage_Scanner_getSourceLocation
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() void
-DL_Scanner_setSourceLocation
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Scanner_setSourceLocation
     (
-        DL_Context *context,
-        DL_Scanner *scanner,
-        DL_SourceLocation *sourceLocation
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner,
+        Nucleus_DataLanguage_SourceLocation *sourceLocation
     );
 
-DL_NonNull() DL_Symbol
-DL_Scanner_getSymbol
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Symbol
+Nucleus_DataLanguage_Scanner_getSymbol
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() void
-DL_Scanner_increment
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Scanner_increment
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );

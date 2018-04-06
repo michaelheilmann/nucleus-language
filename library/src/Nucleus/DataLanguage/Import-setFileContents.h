@@ -1,21 +1,21 @@
 #pragma once
 
 #include "Nucleus/DataLanguage/Import-Annotations.h"
-#include "Nucleus/DataLanguage/Import-String.h"
+#include "Nucleus/DataLanguage/Import-Boolean.h"
 #include "Nucleus/DataLanguage/Import-StringBuffer.h"
 
-DL_NonNull() void
-DL_Context_setFileContentsStringBuffer
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Context_setFileContentsStringBuffer
     (
-        DL_Context *context,
-        DL_String *pathname,
-        DL_StringBuffer *contents
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *pathname,
+        Nucleus_DataLanguage_StringBuffer *contents
     );
 
-DL_NonNull() void
-DL_Context_setFileContentsString
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Context_setFileContentsString
     (
-        DL_Context *context,
-        DL_String *pathname,
-        DL_String *contents
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_String *pathname,
+        Nucleus_DataLanguage_String *contents
     );

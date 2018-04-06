@@ -1,31 +1,39 @@
 #include "Nucleus/DataLanguage/Parser-private.c.i"
 
-DL_ReturnNonNull() DL_Parser *
-DL_Parser_create
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_Parser *
+Nucleus_DataLanguage_Parser_create
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     )
 {
-    DL_Parser *self = (DL_Parser *)DL_Context_allocateObject(context, sizeof(DL_Parser));
+    Nucleus_DataLanguage_Parser *self = (Nucleus_DataLanguage_Parser *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Parser));
     initialize(context, self, scanner);
-    ((DL_Object *)(self))->visit = (DL_Visit *)&visit;
+    ((Nucleus_DataLanguage_HeapObject *)(self))->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
     return self;
 }
 
-DL_NonNull() DL_Source *
-DL_Parser_getSource
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
+Nucleus_DataLanguage_Parser_getSource
     (
-        DL_Context *context,
-        DL_Parser *parser
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Parser *parser
     )
-{ return DL_Scanner_getSource(context, parser->scanner); }
+{ return Nucleus_DataLanguage_Scanner_getSource(context, parser->scanner); }
 
-DL_NonNull() void
-DL_Parser_setSource
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Parser_setSource
     (
-        DL_Context *context,
-        DL_Parser *parser,
-        DL_Source *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Parser *parser,
+        Nucleus_DataLanguage_Source *source
     )
-{ DL_Scanner_setSource(context, parser->scanner, source); }
+{ Nucleus_DataLanguage_Scanner_setSource(context, parser->scanner, source); }
+
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_AST_Node *
+Nucleus_DataLanguage_Parser_run
+    (
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Parser *parser
+    )
+{ return parseUnit(context, parser); }

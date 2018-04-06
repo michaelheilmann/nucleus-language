@@ -2,26 +2,26 @@
 
 #include "Nucleus/DataLanguage/Forward.h"
 
-struct DL_SourceLocation
+struct Nucleus_DataLanguage_SourceLocation
 {
-    DL_Object __parent;
-    DL_Source *source;
+    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Source *source;
     size_t offset;
-}; // struct DL_SourceLocation
+}; // struct Nucleus_DataLanguage_SourceLocation
 
 
-DL_NonNull() DL_SourceLocation *
-DL_SourceLocation_create
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
+Nucleus_DataLanguage_SourceLocation_create
     (
-        DL_Context *context,
-        DL_Source *source,
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Source *source,
         size_t offset
     );
 
-DL_NonNull() void
-DL_SourceLocation_assign
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_SourceLocation_assign
     (
-        DL_Context *context,
-        DL_SourceLocation *target,
-        DL_SourceLocation *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceLocation *target,
+        Nucleus_DataLanguage_SourceLocation *source
     );

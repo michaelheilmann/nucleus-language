@@ -6,6 +6,6 @@
 
 typedef int Nucleus_Interpreter_Integer;
 
-#define Nucleus_Interpreter_Integer_LeastConstant (INT_MIN)
+#define Nucleus_Interpreter_Integer_LeastConstant() (INT_MIN)
 
-#define Nucleus_Interpreter_Integer_GreatestConstant (INT_MAX)
+#define Nucleus_Interpreter_Integer_GreatestConstant() (INT_MAX)

@@ -9,6 +9,6 @@ Nucleus_Interpreter_Symbol_##CNAME \
         Nucleus_Interpreter_Context *context \
     );
 
-#include "Nucleus/Language/UnicodeCodePoints.i"
+#include "Nucleus/Interpreter/UnicodeCodePoints.i"
 
 #undef DEFINE

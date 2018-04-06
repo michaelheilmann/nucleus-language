@@ -4,50 +4,50 @@
 
 #include "Nucleus/DataLanguage/Context.h"
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initialize
     (
-        DL_Context *context,
-        DL_Token *self,
-        DL_Token_Kind kind,
-        DL_SourceLocation *begin,
-        DL_SourceLocation *end,
-        DL_String *text
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *self,
+        Nucleus_DataLanguage_Token_Kind kind,
+        Nucleus_DataLanguage_SourceLocation *begin,
+        Nucleus_DataLanguage_SourceLocation *end,
+        Nucleus_DataLanguage_String *text
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 visit
     (
-        DL_Context *context,
-        DL_Token *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *self
     );
 
-struct DL_Token
+struct Nucleus_DataLanguage_Token
 {
-    DL_Object __parent;
-    DL_Token_Kind kind;
-    DL_SourceLocation *begin,
+    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Token_Kind kind;
+    Nucleus_DataLanguage_SourceLocation *begin,
                       *end;
-    DL_String *text;
+    Nucleus_DataLanguage_String *text;
 };
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 visit
     (
-        DL_Context *context,
-        DL_Token *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *self
     )
 {}
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initialize
     (
-        DL_Context *context,
-        DL_Token *self,
-        DL_Token_Kind kind,
-        DL_SourceLocation *begin,
-        DL_SourceLocation *end,
-        DL_String *text
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *self,
+        Nucleus_DataLanguage_Token_Kind kind,
+        Nucleus_DataLanguage_SourceLocation *begin,
+        Nucleus_DataLanguage_SourceLocation *end,
+        Nucleus_DataLanguage_String *text
     )
 {
     self->kind = kind;
@@ -56,50 +56,50 @@ initialize
     self->text = text;
 }
 
-DL_NonNull() DL_Token *
-DL_Token_create
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Token *
+Nucleus_DataLanguage_Token_create
     (
-        DL_Context *context,
-        DL_Token_Kind kind,
-        DL_SourceLocation *begin,
-        DL_SourceLocation *end,
-        DL_String *text
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token_Kind kind,
+        Nucleus_DataLanguage_SourceLocation *begin,
+        Nucleus_DataLanguage_SourceLocation *end,
+        Nucleus_DataLanguage_String *text
     )
 {
-    DL_Token *self = (DL_Token *)DL_Context_allocateObject(context, sizeof(DL_Token));
+    Nucleus_DataLanguage_Token *self = (Nucleus_DataLanguage_Token *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Token));
     initialize(context, self, kind, begin, end, text);
-    ((DL_Object *)self)->visit = (DL_Visit *)&visit;
+    ((Nucleus_DataLanguage_HeapObject *)self)->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
     return self;
 }
 
-DL_NonNull() DL_SourceLocation *
-DL_Token_getBegin
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
+Nucleus_DataLanguage_Token_getBegin
     (
-        DL_Context *context,
-        DL_Token *token
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *token
     )
 { return token->begin; }
 
-DL_NonNull() DL_SourceLocation *
-DL_Token_getEnd
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
+Nucleus_DataLanguage_Token_getEnd
     (
-        DL_Context *context,
-        DL_Token *token
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *token
     )
 { return token->end; }
 
-DL_NonNull() DL_Token_Kind
-DL_Token_getKind
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Token_Kind
+Nucleus_DataLanguage_Token_getKind
     (
-        DL_Context *context,
-        DL_Token *token
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *token
     )
 { return token->kind; }
 
-DL_NonNull() DL_String *
-DL_Token_getText
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_String *
+Nucleus_DataLanguage_Token_getText
     (
-        DL_Context *context,
-        DL_Token *token
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token *token
     )
 { return token->text; }

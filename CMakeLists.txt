@@ -22,9 +22,6 @@ add_subdirectory(${NUCLEUS_PATH})
 # Add module "Nucleus.Interpreter".
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/interpreter)
 
-# Add module "Nucleus.Language".
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/language)
-
 # Add module "library".
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/library")
 

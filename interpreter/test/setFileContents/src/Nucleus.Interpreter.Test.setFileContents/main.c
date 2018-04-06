@@ -19,8 +19,8 @@ test
                                                                               strlen("Hello, World!\r\n"));
     Nucleus_Interpreter_Context_setFileContentsString(context, pathname, reference);
     Nucleus_Interpreter_String *contents = Nucleus_Interpreter_Context_getFileContentsString(context, pathname);
-    Nucleus_Interpreter_UnitTest_AssertTrue(context, Nucleus_Interpreter_String_equal(context,
-                                                                                      contents, reference));
+    Nucleus_Interpreter_UnitTest_AssertTrue(context, Nucleus_Interpreter_String_equalTo(context,
+                                                                                        contents, reference));
 }
 
 int main(int argc, char **argv)

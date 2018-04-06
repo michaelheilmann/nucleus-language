@@ -4,30 +4,30 @@
 #include "Nucleus/DataLanguage/Context.h"
 #include "Nucleus/DataLanguage/Source.h"
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initialize
     (
-        DL_Context *context,
-        DL_SourceIterator *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *self
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 finalize
     (
-        DL_Context *context,
-        DL_SourceIterator *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *self
     );
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 visit
     (
-        DL_Context *context,
-        DL_SourceIterator *self
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_SourceIterator *self
     );
 
-struct DL_SourceIterator
+struct Nucleus_DataLanguage_SourceIterator
 {
-    DL_Object _parent;
-    DL_Source *source;
-    DL_StringIterator *iterator;
+    Nucleus_DataLanguage_HeapObject _parent;
+    Nucleus_DataLanguage_Source *source;
+    Nucleus_DataLanguage_StringIterator *iterator;
 };

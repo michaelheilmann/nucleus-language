@@ -2,24 +2,33 @@
 
 #include "Nucleus/DataLanguage/Forward.h"
 
-DL_ReturnNonNull() DL_Parser *
-DL_Parser_create
+typedef struct Nucleus_DataLanguage_AST_Node Nucleus_DataLanguage_AST_Node;
+
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_Parser *
+Nucleus_DataLanguage_Parser_create
     (
-        DL_Context *context,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
     );
 
-DL_NonNull() DL_Source *
-DL_Parser_getSource
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
+Nucleus_DataLanguage_Parser_getSource
     (
-        DL_Context *context,
-        DL_Parser *parser
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Parser *parser
     );
 
-DL_NonNull() void
-DL_Parser_setSource
+Nucleus_DataLanguage_NonNull() void
+Nucleus_DataLanguage_Parser_setSource
     (
-        DL_Context *context,
-        DL_Parser *parser,
-        DL_Source *source
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Parser *parser,
+        Nucleus_DataLanguage_Source *source
+    );
+
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_AST_Node *
+Nucleus_DataLanguage_Parser_run
+    (
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Parser *parser
     );

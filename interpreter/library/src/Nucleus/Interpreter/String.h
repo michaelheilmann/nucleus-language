@@ -37,7 +37,7 @@ Nucleus_Interpreter_String_create
     );
 
 Nucleus_Interpreter_NonNull() bool
-Nucleus_Interpreter_String_equal
+Nucleus_Interpreter_String_equalTo
     (
         Nucleus_Interpreter_Context *context,
         Nucleus_Interpreter_String *first,

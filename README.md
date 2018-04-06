@@ -52,6 +52,16 @@ To execute the unit tests, enter
 ctest
 ```
 
+### Compilation options (Linux and Cygwin)
+For Linux and Cygwin builds, certain CMake options are supported.
+The currently supported options are `With-Debug-Information=(ON|OFF)`
+and `With-Optimizations=(ON|OFF)`.
+
+For example, to enable both optimizations and debug information enter
+```
+cmake -DWith-Optimizations=ON -DWith-Debug-Information=ON CMakeLists.txt
+```
+
 #### Continuous Integrations Status Maxtrix
 
 |              | master                                                                                                                                                                                   | develop                                                                                                                                                                                    |

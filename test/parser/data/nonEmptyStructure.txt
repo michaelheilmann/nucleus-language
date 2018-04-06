@@ -1,0 +1,14 @@
+{
+    prename : "Mickey",
+    surename : "Mouse",
+    age : 21,
+    world : "Disney World",
+    quotes : [
+        "Happiness isn't about getting what you want all the time, it's about loving what you have and being grateful for it.",
+        "Don't stress over anything that you can't change.",
+    ],
+    placeholder : void,
+    isFictionalCharacter : true,
+    isHuman : false,
+    isAntropomorphic : true,
+}

@@ -4,61 +4,63 @@
 
 /// @ingroup dl
 /// @brief An enumeration of DL token kinds.
-typedef enum DL_Token_Kind DL_Token_Kind;
+typedef enum Nucleus_DataLanguage_Token_Kind Nucleus_DataLanguage_Token_Kind;
 
-enum DL_Token_Kind
+enum Nucleus_DataLanguage_Token_Kind
 {
+    /// @brief Token kind of a name.
+    Nucleus_DataLanguage_Token_Kind_Name,
 
     /// @brief Token kind of a colon.
-    DL_Token_Kind_Colon,
+    Nucleus_DataLanguage_Token_Kind_Colon,
 
     /// @brief Token kind of a comma.
-    DL_Token_Kind_Comma,
+    Nucleus_DataLanguage_Token_Kind_Comma,
 
     /// @brief Token kind of a true literal.
-    DL_Token_Kind_TrueLiteral,
+    Nucleus_DataLanguage_Token_Kind_TrueLiteral,
 
     /// @brief Token kind of a false literal.
-    DL_Token_Kind_FalseLiteral,
-
-    /// @brief Token kind of a null literal.
-    DL_Token_Kind_NullLiteral,
+    Nucleus_DataLanguage_Token_Kind_FalseLiteral,
 
     /// @brief Token kind of a string literal.
-    DL_Token_Kind_StringLiteral,
+    Nucleus_DataLanguage_Token_Kind_StringLiteral,
 
     /// @brief Token kind of an integer literal.
-    DL_Token_Kind_IntegerLiteral,
+    Nucleus_DataLanguage_Token_Kind_IntegerLiteral,
 
     /// @brief Token kind of a real literal.
-    DL_Token_Kind_RealLiteral,
+    Nucleus_DataLanguage_Token_Kind_RealLiteral,
+
+    /// @brief Token kind of a void literal.
+    Nucleus_DataLanguage_Token_Kind_VoidLiteral,
 
     /// @brief Token kind of a structure opening delimiter.
-    DL_Token_Kind_StructureOpeningDelimiter,
+    Nucleus_DataLanguage_Token_Kind_StructureOpeningDelimiter,
 
     /// @brief Token kind of a structure closing delimiter.
-    DL_Token_Kind_StructureClosingDelimiter,
+    Nucleus_DataLanguage_Token_Kind_StructureClosingDelimiter,
 
     /// @brief Token kind of a list opening delimiter.
-    DL_Token_Kind_ListOpeningDelimiter,
+    Nucleus_DataLanguage_Token_Kind_ListOpeningDelimiter,
 
     /// @brief Token kind of a list closing delimiter.
-    DL_Token_Kind_ListClosingDelimiter,
+    Nucleus_DataLanguage_Token_Kind_ListClosingDelimiter,
 
     /// @brief Token kind of a comment.
-    DL_Token_Kind_Comment,
+    Nucleus_DataLanguage_Token_Kind_Comment,
 
     /// @brief Token kind of the beginning of an input.
-    DL_Token_Kind_Begin,
+    Nucleus_DataLanguage_Token_Kind_Begin,
 
     /// @brief Token kind of the end of an input.
-    DL_Token_Kind_End,
+    Nucleus_DataLanguage_Token_Kind_End,
 
-}; // enum DL_Token_Kind
+}; // enum Nucleus_DataLanguage_Token_Kind
 
-DL_NonNull() DL_String *
-DL_Token_Kind_toString
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_String *
+Nucleus_DataLanguage_Token_Kind_toString
     (
-        DL_Context *context,
-        DL_Token_Kind kind
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Token_Kind kind
     );

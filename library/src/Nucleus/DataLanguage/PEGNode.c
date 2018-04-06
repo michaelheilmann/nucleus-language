@@ -18,18 +18,18 @@ enum DL_PEGNode_Kind
 
 struct DL_PEGNode
 {
-    DL_Object _parent;
+    Nucleus_DataLanguage_HeapObject _parent;
     DL_PEGNode_Kind kind;
     union
     {
         struct
         {
-            DL_Symbol symbol;
+            Nucleus_DataLanguage_Symbol symbol;
         } terminal;
         struct
         {
-            DL_Symbol first;
-            DL_Symbol last;
+            Nucleus_DataLanguage_Symbol first;
+            Nucleus_DataLanguage_Symbol last;
         } terminalRange;
         struct
         {
@@ -44,25 +44,25 @@ struct DL_PEGNode
     };
 };
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initializeTerminal
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *self,
-        DL_Symbol symbol
+        Nucleus_DataLanguage_Symbol symbol
     )
 {
     self->kind = DL_PEGNode_Kind_Terminal;
     self->terminal.symbol = symbol;
 }
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initializeTerminalRange
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *self,
-        DL_Symbol first,
-        DL_Symbol last
+        Nucleus_DataLanguage_Symbol first,
+        Nucleus_DataLanguage_Symbol last
     )
 {
     self->kind = DL_PEGNode_Kind_TerminalRange;
@@ -70,10 +70,10 @@ initializeTerminalRange
     self->terminalRange.last = last;
 }
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initializeOrderedChoice
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *self,
         DL_PEGNode *left,
         DL_PEGNode *right
@@ -84,10 +84,10 @@ initializeOrderedChoice
     self->orderedChoice.right = right;
 }
 
-DL_NonNull() static void
+Nucleus_DataLanguage_NonNull() static void
 initializeDifference
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *self,
         DL_PEGNode *minuend,
         DL_PEGNode *subtrahend
@@ -98,88 +98,88 @@ initializeDifference
     self->difference.subtrahend = subtrahend;
 }
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminal
     (
-        DL_Context *context,
-        DL_Symbol symbol
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Symbol symbol
     )
 {
-    DL_PEGNode *self = (DL_PEGNode *)DL_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeTerminal(context, self, symbol);
     return self;
 }
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminalRange
     (
-        DL_Context *context,
-        DL_Symbol first,
-        DL_Symbol last
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Symbol first,
+        Nucleus_DataLanguage_Symbol last
     )
 {
-    DL_PEGNode *self = (DL_PEGNode *)DL_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeTerminalRange(context, self, first, last);
     return self;
 }
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createOrderedChoice
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *left,
         DL_PEGNode *right
      )
 {
-    DL_PEGNode *self = (DL_PEGNode *)DL_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeOrderedChoice(context, self, left, right);
     return self;
 }
 
-DL_NonNull() DL_PEGNode *
+Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createDifference
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *minuend,
         DL_PEGNode *subtrahend
      )
 {
-    DL_PEGNode *self = (DL_PEGNode *)DL_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeDifference(context, self, minuend, subtrahend);
     return self;
 }
 
 
-DL_NonNull() bool
+Nucleus_DataLanguage_NonNull() bool
 DL_PEGNode_test
     (
-        DL_Context *context,
+        Nucleus_DataLanguage_Context *context,
         DL_PEGNode *self,
-        DL_Scanner *scanner
+        Nucleus_DataLanguage_Scanner *scanner
     )
 {
     switch (self->kind)
     {
         case DL_PEGNode_Kind_Terminal:
         {
-            DL_SourceLocation *s = DL_Scanner_getSourceLocation(context, scanner);
-            DL_Symbol symbol = DL_Scanner_getSymbol(context, scanner);
-            bool result = DL_Symbol_equal(context, self->terminal.symbol, symbol);
+            Nucleus_DataLanguage_SourceLocation *s = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
+            Nucleus_DataLanguage_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
+            bool result = Nucleus_DataLanguage_Symbol_equalTo(context, self->terminal.symbol, symbol);
             if (!result)
             {
-                DL_Scanner_setSourceLocation(context, scanner, s);
+                Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s);
             }
             return result;
         }
         case DL_PEGNode_Kind_TerminalRange:
         {
-            DL_SourceLocation *s = DL_Scanner_getSourceLocation(context, scanner);
-            DL_Symbol symbol = DL_Scanner_getSymbol(context, scanner);
-            bool result = DL_Symbol_lowerOrEqual(context, self->terminalRange.first, symbol)
-                       && DL_Symbol_lowerOrEqual(context, symbol, self->terminalRange.last);
+            Nucleus_DataLanguage_SourceLocation *s = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
+            Nucleus_DataLanguage_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
+            bool result = Nucleus_DataLanguage_Symbol_lowerThanOrEqualTo(context, self->terminalRange.first, symbol)
+                       && Nucleus_DataLanguage_Symbol_lowerThanOrEqualTo(context, symbol, self->terminalRange.last);
             if (!result)
             {
-                DL_Scanner_setSourceLocation(context, scanner, s);
+                Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s);
             }
             return result;
         }
@@ -188,9 +188,9 @@ DL_PEGNode_test
                 || DL_PEGNode_test(context, self->orderedChoice.right, scanner);
         case DL_PEGNode_Kind_Difference:
         {
-            DL_SourceLocation *s = DL_Scanner_getSourceLocation(context, scanner);
+            Nucleus_DataLanguage_SourceLocation *s = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
 
-            DL_Symbol symbol = DL_Scanner_getSymbol(context, scanner);
+            Nucleus_DataLanguage_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
             bool result;
             result = DL_PEGNode_test(context, self->difference.minuend, scanner);
             if (!result)
@@ -199,23 +199,23 @@ DL_PEGNode_test
                 return false;
             }
             // backup the state after succeeding minuend
-            DL_SourceLocation *s2 = DL_Scanner_getSourceLocation(context, scanner);
+            Nucleus_DataLanguage_SourceLocation *s2 = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
             
             // restore before state before succeeding minuend
-            DL_Scanner_setSourceLocation(context, scanner, s);
+            Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s);
             
             result = DL_PEGNode_test(context, self->difference.subtrahend, scanner);
             if (result)
             {
                 // restore state before succeeding minuend
-                DL_Scanner_setSourceLocation(context, scanner, s);
+                Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s);
                 return false;
             }
             // minuend succeeded, subtrahend failed, restore state after minuend
-            DL_Scanner_setSourceLocation(context, scanner, s2);
+            Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s2);
             return true;
         }
         default:
-            DL_Context_raiseError(context, DL_Status_UnreachableCodeReached);
+            Nucleus_DataLanguage_Context_raiseError(context, Nucleus_DataLanguage_Status_UnreachableCodeReached);
     };
 }

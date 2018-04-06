@@ -2,8 +2,8 @@
 
 #include "Nucleus/Interpreter/HeapObject.h"
 
-typedef Nucleus_Interpreter_HeapObject DL_Object;
+typedef Nucleus_Interpreter_HeapObject Nucleus_DataLanguage_HeapObject;
 
-#define DL_Finalize Nucleus_Interpreter_HeapObject_Finalize
+#define Nucleus_DataLanguage_HeapObject_Finalize Nucleus_Interpreter_HeapObject_Finalize
 
-#define DL_Visit Nucleus_Interpreter_HeapObject_Visit
+#define Nucleus_DataLanguage_HeapObject_Visit Nucleus_Interpreter_HeapObject_Visit

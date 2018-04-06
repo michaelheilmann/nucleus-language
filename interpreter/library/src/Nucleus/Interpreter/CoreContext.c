@@ -4,7 +4,7 @@
 #include "Nucleus/Memory.h"
 #include "Nucleus/Interpreter/JumpTarget.h"
 
-Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
 Nucleus_Interpreter_CoreContext_initialize
     (
         Nucleus_Interpreter_CoreContext *context
@@ -16,14 +16,14 @@ Nucleus_Interpreter_CoreContext_initialize
     return Nucleus_Interpreter_Status_Success;
 }
 
-Nucleus_Interpreter_NonNull() void
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_uninitialize
     (
         Nucleus_Interpreter_CoreContext *context
     )
 {}
 
-Nucleus_Interpreter_NoError() void
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_pushJumpTarget
     (
         Nucleus_Interpreter_CoreContext *context,
@@ -35,7 +35,7 @@ Nucleus_Interpreter_CoreContext_pushJumpTarget
     context->jumpTargets = jumpTarget;
 }
 
-Nucleus_Interpreter_NoError() void
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_popJumpTarget
     (
         Nucleus_Interpreter_CoreContext *context
@@ -125,7 +125,7 @@ Nucleus_Interpreter_CoreContext_deallocate
     )
 { Nucleus_deallocateMemory(memoryBlock); }
 
-Nucleus_Interpreter_NonNull() void
+Nucleus_Interpreter_NoReturn() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_jump
     (
         Nucleus_Interpreter_CoreContext *context

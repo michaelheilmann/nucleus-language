@@ -2,7 +2,7 @@
 
 #include "Nucleus/Interpreter/UnitTesting.h"
 
-#define DL_Status_AssertionFailed Nucleus_Interpreter_Status_AssertionFailed
+#define Nucleus_DataLanguage_Status_AssertionFailed Nucleus_Interpreter_Status_AssertionFailed
 
 #define DL_UnitTest_AssertTrue(c, e) \
     Nucleus_Interpreter_UnitTest_AssertTrue((c)->context, e)

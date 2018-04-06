@@ -32,6 +32,12 @@ enum Nucleus_Interpreter_Status
     /// @brief Status code indicating a semantical error.
     Nucleus_Interpreter_Status_SemanticalError,
 
+    /// @brief Status code indicating a failure because an operation of the environment failed.
+    Nucleus_Interpreter_Status_EnvironmentFailed,
+
+    /// @brief Status code indicating a failure because a convresion failed.
+    Nucleus_Interpreter_Status_ConversionFailed,
+
     /// @brief Status code indicating an internal error.
     Nucleus_Interpreter_Status_InternalError,
 
