@@ -3,6 +3,21 @@
 #include "Nucleus/DataLanguage/Context.h"
 #include "Nucleus/DataLanguage/LineMap.h"
 
+Nucleus_DataLanguage_NonNull() static void
+visit
+    (
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Source *self
+    );
+
+Nucleus_DataLanguage_NonNull() static void
+visit
+    (
+        Nucleus_DataLanguage_Context *context,
+        Nucleus_DataLanguage_Source *self
+    )
+{}
+
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
 Nucleus_DataLanguage_Source_create
     (
@@ -15,6 +30,8 @@ Nucleus_DataLanguage_Source_create
     self->name = name;
     self->string = string;
     self->lineMap = DL_LineMap_create(context, string);
+    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
+                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
     return self;
 }
 

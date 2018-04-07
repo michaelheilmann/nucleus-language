@@ -5,7 +5,7 @@
 
 struct DL_LineMap
 {
-    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_String *source;
     size_t numberOfLines;
     size_t *lines; // zero-based line index to offset of start of line

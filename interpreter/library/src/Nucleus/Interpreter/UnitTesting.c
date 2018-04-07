@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/Interpreter/UnitTesting.h"
 #include "Nucleus/Interpreter/JumpTarget.h"
 

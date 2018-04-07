@@ -1,6 +1,6 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
-#include "Nucleus/Interpreter/Context_getFileContents.h"
+// Copyright (c) Michael Heilmann 2018
+// https://github.com/nucleus-interpreter/blob/master/documentation/Nucleus_Interpreter_getFileContents.md
+#include "Nucleus/Interpreter/getFileContents.h"
 
 #include "Nucleus/FileSystem.h"
 #include "Nucleus/Memory.h"
@@ -48,7 +48,7 @@ Callback
 }
 
 Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_Context_getFileContentsStringBuffer
+Nucleus_Interpreter_getFileContentsStringBuffer
     (
         Nucleus_Interpreter_Context *context,
         Nucleus_Interpreter_String *pathname,
@@ -79,7 +79,7 @@ Nucleus_Interpreter_Context_getFileContentsStringBuffer
 }
 
 Nucleus_Interpreter_NonNull() Nucleus_Interpreter_String *
-Nucleus_Interpreter_Context_getFileContentsString
+Nucleus_Interpreter_getFileContentsString
     (
         Nucleus_Interpreter_Context *context,
         Nucleus_Interpreter_String *pathname
@@ -97,7 +97,7 @@ Nucleus_Interpreter_Context_getFileContentsString
     Nucleus_Interpreter_CoreContext_pushJumpTarget(NUCLEUS_INTERPRETER_CORECONTEXT(context), &eh);
     if (!setjmp(eh.environment))
     {
-        Nucleus_Interpreter_Context_getFileContentsStringBuffer(context, pathname, &stringBuffer);
+        Nucleus_Interpreter_getFileContentsStringBuffer(context, pathname, &stringBuffer);
         Nucleus_Interpreter_CoreContext_popJumpTarget(NUCLEUS_INTERPRETER_CORECONTEXT(context));
     }
     else

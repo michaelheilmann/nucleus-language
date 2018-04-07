@@ -4,7 +4,7 @@
 
 struct Nucleus_DataLanguage_SourceLocation
 {
-    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_Source *source;
     size_t offset;
 }; // struct Nucleus_DataLanguage_SourceLocation

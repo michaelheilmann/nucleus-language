@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/Interpreter/CoreContext.h"
 
 #include <assert.h>
@@ -13,7 +14,7 @@ Nucleus_Interpreter_CoreContext_initialize
     if (!context) return Nucleus_Interpreter_Status_InvalidArgument;
     context->status = Nucleus_Interpreter_Status_Success;
     context->jumpTargets = NULL;
-    return Nucleus_Interpreter_Status_Success;
+    return Nucleus_Interpreter_GC_initialize(&context->gc);
 }
 
 Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
@@ -21,7 +22,9 @@ Nucleus_Interpreter_CoreContext_uninitialize
     (
         Nucleus_Interpreter_CoreContext *context
     )
-{}
+{
+    Nucleus_Interpreter_GC_uninitialize(&context->gc);
+}
 
 Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_pushJumpTarget
@@ -67,24 +70,15 @@ Nucleus_Interpreter_CoreContext_allocate
         size_t size
     )
 {
-    void *memoryBlock = NULL;
-    Nucleus_Status status = Nucleus_allocateMemory(&memoryBlock, size);
+    void *memoryBlock;
+    Nucleus_Interpreter_Status status = Nucleus_Interpreter_GC_allocate(&context->gc,
+                                                                        &memoryBlock,
+                                                                        size);
     if (status)
     {
-        switch (status)
-        {
-        case Nucleus_Status_InvalidArgument:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_InvalidArgument);
-        case Nucleus_Status_AllocationFailed:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_AllocationFailed);
-        case Nucleus_Status_Overflow:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_Overflow);
-        default:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_UnreachableCodeReached);
-        };
+        Nucleus_Interpreter_CoreContext_setStatus(context, status);
         Nucleus_Interpreter_CoreContext_jump(context);
     }
-    Nucleus_fillMemory(memoryBlock, 0, size);
     return memoryBlock;
 }
 
@@ -96,24 +90,16 @@ Nucleus_Interpreter_CoreContext_allocateArray
         size_t elementSize
     )
 {
-    void *memoryBlock = NULL;
-    Nucleus_Status status = Nucleus_allocateArrayMemory(&memoryBlock, numberOfElements, elementSize);
+    void *memoryBlock;
+    Nucleus_Interpreter_Status status = Nucleus_Interpreter_GC_allocateArray(&context->gc,
+                                                                             &memoryBlock,
+                                                                             numberOfElements,
+                                                                             elementSize);
     if (status)
     {
-        switch (status)
-        {
-        case Nucleus_Status_InvalidArgument:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_InvalidArgument);
-        case Nucleus_Status_AllocationFailed:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_AllocationFailed);
-        case Nucleus_Status_Overflow:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_Overflow);
-        default:
-            Nucleus_Interpreter_CoreContext_setStatus(context, Nucleus_Interpreter_Status_UnreachableCodeReached);
-        };
+        Nucleus_Interpreter_CoreContext_setStatus(context, status);
         Nucleus_Interpreter_CoreContext_jump(context);
     }
-    Nucleus_fillArrayMemory(memoryBlock, 0, numberOfElements, elementSize);
     return memoryBlock;
 }
 
@@ -123,7 +109,7 @@ Nucleus_Interpreter_CoreContext_deallocate
         Nucleus_Interpreter_CoreContext *context,
         void *memoryBlock
     )
-{ Nucleus_deallocateMemory(memoryBlock); }
+{ Nucleus_Interpreter_GC_deallocate(&context->gc, memoryBlock); }
 
 Nucleus_Interpreter_NoReturn() Nucleus_Interpreter_NonNull() void
 Nucleus_Interpreter_CoreContext_jump

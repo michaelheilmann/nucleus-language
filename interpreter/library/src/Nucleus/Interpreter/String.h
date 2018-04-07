@@ -1,6 +1,5 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
-/// @brief Interned strings.
+// Copyright (c) Michael Heilmann 2018
+// Interned strings.
 #pragma once
 
 #include "Nucleus/Interpreter/Annotations.h"

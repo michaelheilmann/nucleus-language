@@ -5,7 +5,7 @@
 
 struct Nucleus_DataLanguage_AST_Node
 {
-    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_AST_NodeKind kind;
     union
     {

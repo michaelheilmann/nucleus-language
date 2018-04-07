@@ -252,7 +252,7 @@ test
     {
         Nucleus_DataLanguage_Scanner *scanner = Nucleus_DataLanguage_Scanner_create(context, false);
         Nucleus_DataLanguage_String *pathnameString = Nucleus_DataLanguage_String_create(context, pathname, strlen(pathname));
-        Nucleus_DataLanguage_String *inputString = Nucleus_DataLanguage_Context_getFileContentsString(context, pathnameString);
+        Nucleus_DataLanguage_String *inputString = Nucleus_DataLanguage_getFileContentsString(context, pathnameString);
         Nucleus_DataLanguage_Source *source = Nucleus_DataLanguage_Source_create(context, pathnameString, inputString);
         Nucleus_DataLanguage_Scanner_setSource(context, scanner, source);
         DL_UnitTest_AssertTrue(context, Nucleus_DataLanguage_Symbol_equalTo(context, Nucleus_DataLanguage_Scanner_getSymbol(context, scanner), Nucleus_DataLanguage_Symbol_begin(context)));

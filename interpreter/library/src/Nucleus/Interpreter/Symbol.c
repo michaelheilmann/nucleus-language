@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/Interpreter/Symbol.h"
 
 Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Symbol

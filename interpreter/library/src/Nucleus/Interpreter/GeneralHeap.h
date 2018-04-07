@@ -1,9 +1,10 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
-#include "Nucleus/Interpreter/Heap.h"
+#include "Nucleus/Interpreter/GC/Heap.h"
 
 // Forward declaration.
-typedef struct Nucleus_Interpreter_HeapObject Nucleus_Interpreter_HeapObject;
+typedef struct Nucleus_Interpreter_GC_Object Nucleus_Interpreter_GC_Object;
 
 /// @ingroup interpreter
 /// @internal
@@ -13,9 +14,9 @@ typedef struct Nucleus_Interpreter_GeneralHeap Nucleus_Interpreter_GeneralHeap;
 
 struct Nucleus_Interpreter_GeneralHeap
 {
-    Nucleus_Interpreter_Heap __parent;
+    Nucleus_Interpreter_GC_Heap __parent;
     /// @brief A null pointer or a pointer to the first element of the singly-linked list of @a Nucleus_Interpreter_Object) objects.
-    Nucleus_Interpreter_HeapObject *objects;
+    Nucleus_Interpreter_GC_Object *objects;
 }; // struct Nucleus_Interpreter_GeneralHeap
 
 /// @ingroup interpreter

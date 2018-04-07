@@ -24,7 +24,7 @@ visit
 
 struct Nucleus_DataLanguage_Token
 {
-    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_Token_Kind kind;
     Nucleus_DataLanguage_SourceLocation *begin,
                       *end;
@@ -68,7 +68,8 @@ Nucleus_DataLanguage_Token_create
 {
     Nucleus_DataLanguage_Token *self = (Nucleus_DataLanguage_Token *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Token));
     initialize(context, self, kind, begin, end, text);
-    ((Nucleus_DataLanguage_HeapObject *)self)->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
+    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
+                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
     return self;
 }
 

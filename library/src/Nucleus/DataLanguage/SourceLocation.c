@@ -1,8 +1,6 @@
 #include "Nucleus/DataLanguage/SourceLocation.h"
 
 #include "Nucleus/DataLanguage/Context.h"
-#include "Nucleus/Interpreter/Context.h"
-#include "Nucleus/Interpreter/HeapObject.h"
 
 Nucleus_DataLanguage_NonNull() static void
 initialize
@@ -52,9 +50,8 @@ Nucleus_DataLanguage_SourceLocation_create
 {
     Nucleus_DataLanguage_SourceLocation *self = (Nucleus_DataLanguage_SourceLocation *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_SourceLocation));
     initialize(context, self, source, offset);
-    Nucleus_Interpreter_HeapObject_setVisitor(NUCLEUS_INTERPRETER_CONTEXT(context->context),
-                                              NUCLEUS_INTERPRETER_HEAPOBJECT(self),
-                                              NUCLEUS_INTERPRETER_HEAPOBJECT_VISIT(&visit));
+    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
+                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
     return self;
 }
 

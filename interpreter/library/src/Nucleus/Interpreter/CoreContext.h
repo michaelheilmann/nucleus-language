@@ -1,8 +1,10 @@
-// Provides error handling and memory allocations/deallocations.
+// Copyright (c) Michael Heilmann 2018
+// Provides getting/setting a status, pushing/popping/jumping to jump targets, and memory allocations/deallocations.
 #pragma once
 
 #include "Nucleus/Interpreter/Annotations.h"
 #include "Nucleus/Interpreter/Status.h"
+#include "Nucleus/Interpreter/GC.h"
 #include <stddef.h> /// @todo For size_t. Remove this.
 
 // Forward declaration.
@@ -31,6 +33,8 @@ struct Nucleus_Interpreter_CoreContext
     /// @brief The status variable of this context.
     /// Default value is Nucleus_Language_FeatureLevelOne_Status_Success.
     Nucleus_Interpreter_Status status;
+    /// @brief The garbage collector.
+    Nucleus_Interpreter_GC gc;
 }; // struct Nucleus_Interpreter_CoreContext
 
 /// @ingroup interpreter
