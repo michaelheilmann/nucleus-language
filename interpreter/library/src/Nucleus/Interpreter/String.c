@@ -5,6 +5,7 @@
 #include "Nucleus/Interpreter/Context.h"
 #include "Nucleus/Interpreter/JumpTarget.h"
 
+#include "Nucleus/Hash/Memory.h"
 #include "Nucleus/Memory.h"
 
 Nucleus_Interpreter_NonNull() static unsigned int
