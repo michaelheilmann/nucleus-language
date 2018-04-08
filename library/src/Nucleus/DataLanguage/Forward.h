@@ -12,7 +12,7 @@
 #include "Nucleus/DataLanguage/Import-getFileContents.h"
 #include "Nucleus/DataLanguage/Import-setFileContents.h"
 #include "Nucleus/DataLanguage/Import-JumpTarget.h"
-#include "Nucleus/DataLanguage/Import-HeapObject.h"
+#include "Nucleus/DataLanguage/Import-Object.h"
 
 typedef struct Nucleus_DataLanguage_Context Nucleus_DataLanguage_Context;
 

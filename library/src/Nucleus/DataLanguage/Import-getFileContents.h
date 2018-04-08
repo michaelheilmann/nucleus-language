@@ -5,7 +5,7 @@
 #include "Nucleus/DataLanguage/Import-StringBuffer.h"
 
 Nucleus_DataLanguage_NonNull() void
-Nucleus_DataLanguage_Context_getFileContentsStringBuffer
+Nucleus_DataLanguage_getFileContentsStringBuffer
     (
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_String *pathname,
@@ -13,7 +13,7 @@ Nucleus_DataLanguage_Context_getFileContentsStringBuffer
     );
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_String *
-Nucleus_DataLanguage_Context_getFileContentsString
+Nucleus_DataLanguage_getFileContentsString
     (
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_String *pathname

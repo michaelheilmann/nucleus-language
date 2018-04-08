@@ -1,6 +1,5 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
-/// @brief Interned strings.
+// Copyright (c) Michael Heilmann 2018
+// Interned strings.
 #include "Nucleus/Interpreter/String-private.c.in"
 
 #include "Nucleus/Interpreter/Context.h"
@@ -47,7 +46,7 @@ lookup
 {
     unsigned int hashValue = Nucleus_Interpreter_hashMemory(context, bytes, numberOfBytes);
     unsigned int hashIndex = hashValue % stringHeap->capacity;
-    for (Nucleus_Interpreter_String *string = NUCLEUS_INTERPRETER_STRING(stringHeap->buckets[hashIndex]); NULL != string; string = NUCLEUS_INTERPRETER_STRING(NUCLEUS_INTERPRETER_HEAPOBJECT(string)->next))
+    for (Nucleus_Interpreter_String *string = NUCLEUS_INTERPRETER_STRING(stringHeap->buckets[hashIndex]); NULL != string; string = NUCLEUS_INTERPRETER_STRING(NUCLEUS_INTERPRETER_GC_OBJECT(string)->next))
     {
         if (hashValue == string->hashValue && numberOfBytes == string->numberOfBytes)
         {
@@ -86,7 +85,7 @@ create
     string->numberOfBytes = numberOfBytes;
     string->hashValue = lookupResult->hashValue;
     Nucleus_copyMemory(string->bytes, bytes, numberOfBytes);
-    NUCLEUS_INTERPRETER_HEAPOBJECT(string)->next = NUCLEUS_INTERPRETER_HEAPOBJECT(context->stringHeap.buckets[lookupResult->hashIndex]);
+    NUCLEUS_INTERPRETER_GC_OBJECT(string)->next = NUCLEUS_INTERPRETER_GC_OBJECT(context->stringHeap.buckets[lookupResult->hashIndex]);
     context->stringHeap.buckets[lookupResult->hashIndex] = string;
     context->stringHeap.size++;
     lookupResult->string = string;

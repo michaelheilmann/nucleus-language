@@ -1,7 +1,8 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/Interpreter/StringIterator.h"
 
 #include "Nucleus/Interpreter/Context.h"
-#include "Nucleus/Interpreter/HeapObject.h"
+#include "Nucleus/Interpreter/GC/Object.h"
 #include "Nucleus/Interpreter/String.h"
 #include "Nucleus/Interpreter/Symbol.h"
 
@@ -28,7 +29,7 @@ updateSymbol
 
 struct Nucleus_Interpreter_StringIterator
 {
-    Nucleus_Interpreter_HeapObject __parent;
+    Nucleus_Interpreter_GC_Object __parent;
     Nucleus_Interpreter_String *string;
     Nucleus_Interpreter_Symbol symbol;
     size_t offset;
@@ -79,7 +80,7 @@ Nucleus_Interpreter_StringIterator_create
         Nucleus_Interpreter_String *string
     )
 {
-    Nucleus_Interpreter_StringIterator *stringIterator = (Nucleus_Interpreter_StringIterator *)Nucleus_Interpreter_Context_allocateHeapObject(context, sizeof(Nucleus_Interpreter_StringIterator));
+    Nucleus_Interpreter_StringIterator *stringIterator = (Nucleus_Interpreter_StringIterator *)Nucleus_Interpreter_Context_allocateObject(context, sizeof(Nucleus_Interpreter_StringIterator));
     stringIterator->string = string;
     stringIterator->offset = 0;
     stringIterator->symbol = Nucleus_Interpreter_Symbol_begin(context);

@@ -18,7 +18,7 @@ enum DL_PEGNode_Kind
 
 struct DL_PEGNode
 {
-    Nucleus_DataLanguage_HeapObject _parent;
+    Nucleus_DataLanguage_Object _parent;
     DL_PEGNode_Kind kind;
     union
     {

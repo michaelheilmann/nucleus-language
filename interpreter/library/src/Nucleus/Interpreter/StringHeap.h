@@ -1,7 +1,7 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
-#include "Nucleus/Interpreter/Heap.h"
-#include "Nucleus/Interpreter/Annotations.h"
+#include "Nucleus/Interpreter/GC/Heap.h"
 #include <stddef.h> // For size_t.
 
 // Forward declaration.
@@ -15,7 +15,7 @@ typedef struct Nucleus_Interpreter_StringHeap Nucleus_Interpreter_StringHeap;
 
 struct Nucleus_Interpreter_StringHeap
 {
-    Nucleus_Interpreter_Heap __parent;
+    Nucleus_Interpreter_GC_Heap __parent;
     Nucleus_Interpreter_String **buckets;
     size_t size;
     size_t capacity;

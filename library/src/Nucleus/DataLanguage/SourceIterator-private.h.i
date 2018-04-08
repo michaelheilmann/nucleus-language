@@ -27,7 +27,7 @@ visit
 
 struct Nucleus_DataLanguage_SourceIterator
 {
-    Nucleus_DataLanguage_HeapObject _parent;
+    Nucleus_DataLanguage_Object _parent;
     Nucleus_DataLanguage_Source *source;
     Nucleus_DataLanguage_StringIterator *iterator;
 };

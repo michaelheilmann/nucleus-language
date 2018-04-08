@@ -1,12 +1,12 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/Interpreter/String.h"
-#include "Nucleus/Interpreter/HeapObject.h"
-#include <stddef.h> /// @todo For size_t. Remove this.
+#include "Nucleus/Interpreter/GC/Object.h"
 
 struct Nucleus_Interpreter_String
 {
-    Nucleus_Interpreter_HeapObject __parent;
+    Nucleus_Interpreter_GC_Object __parent;
     size_t hashValue;
     size_t numberOfBytes;
     char bytes[];

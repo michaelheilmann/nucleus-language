@@ -8,7 +8,7 @@
 
 struct Nucleus_DataLanguage_Parser
 {
-    Nucleus_DataLanguage_HeapObject __parent;
+    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_Scanner *scanner;
     Nucleus_DataLanguage_Token *token;
 }; // struct Nucleus_DataLanguage_Parser

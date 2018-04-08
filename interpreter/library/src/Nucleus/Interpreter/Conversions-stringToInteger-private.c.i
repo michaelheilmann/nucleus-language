@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/Interpreter/Conversions-stringToInteger-private.h.i"
 #include "Nucleus/Interpreter/PredefinedSymbols.h"
 

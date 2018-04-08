@@ -1,13 +1,12 @@
-/// @file Nucleus/Interpreter/Context.c
-/// @brief Definitions of a @a (Nucleus_Interpreter_Context) object.
-/// @author Michael Heilmann
+// Copyright (c) Michael Heilmann 2018
+// Interpreter context.
 #include "Nucleus/Interpreter/Context.h"
 
 #include "Nucleus/Interpreter/Context-private.c.in"
 
 #include <assert.h>
 #include "Nucleus/Memory.h" /// @todo Remove this.
-#include "Nucleus/Interpreter/HeapObject.h"
+#include "Nucleus/Interpreter/GC/Object.h"
 #include "Nucleus/Interpreter/JumpTarget.h"
 
 Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
@@ -38,7 +37,7 @@ Nucleus_Interpreter_Context_initialize
         else
         {
             Nucleus_Interpreter_CoreContext_popJumpTarget(NUCLEUS_INTERPRETER_CORECONTEXT(context));
-            Nucleus_Interpreter_Heap_uninitialize(context, NUCLEUS_INTERPRETER_HEAP(&context->stringHeap));
+            Nucleus_Interpreter_GC_Heap_uninitialize(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->stringHeap));
             Nucleus_Interpreter_Context_raiseError(context, Nucleus_Interpreter_CoreContext_getStatus(NUCLEUS_INTERPRETER_CORECONTEXT(context)));
         }
     }
@@ -58,8 +57,8 @@ Nucleus_Interpreter_Context_uninitialize
         Nucleus_Interpreter_Context *context
     )
 {
-    Nucleus_Interpreter_Heap_uninitialize(context, NUCLEUS_INTERPRETER_HEAP(&context->generalHeap));
-    Nucleus_Interpreter_Heap_uninitialize(context, NUCLEUS_INTERPRETER_HEAP(&context->stringHeap));
+    Nucleus_Interpreter_GC_Heap_uninitialize(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->generalHeap));
+    Nucleus_Interpreter_GC_Heap_uninitialize(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->stringHeap));
     while (context->scratchSpaces)
     {
         Nucleus_Interpreter_ScratchSpace *scratchSpace = context->scratchSpaces; context->scratchSpaces = scratchSpace->next;
@@ -117,16 +116,18 @@ Nucleus_Interpreter_Context_raiseError
     Nucleus_Interpreter_CoreContext_jump(NUCLEUS_INTERPRETER_CORECONTEXT(context));
 }
 
-Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_HeapObject *
-Nucleus_Interpreter_Context_allocateHeapObject
+Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Object *
+Nucleus_Interpreter_Context_allocateObject
     (
         Nucleus_Interpreter_Context *context,
         size_t numberOfBytes
     )
 {
-    Nucleus_Interpreter_HeapObject *object = Nucleus_Interpreter_CoreContext_allocate(NUCLEUS_INTERPRETER_CORECONTEXT(context),
-                                                                                      numberOfBytes);
-    object->next = context->generalHeap.objects; context->generalHeap.objects = object;
+    Nucleus_Interpreter_Object *object = Nucleus_Interpreter_CoreContext_allocate(NUCLEUS_INTERPRETER_CORECONTEXT(context),
+                                                                                  numberOfBytes);
+    object->next = context->generalHeap.objects;
+    context->generalHeap.objects = object;
+    Nucleus_Interpreter_GC_Object_setWhite(object);
     return object;
 }
 
@@ -174,4 +175,62 @@ Nucleus_Interpreter_Context_relinquishScratchSpace
 {
     Nucleus_Interpreter_ScratchSpace *scratchSpace = (Nucleus_Interpreter_ScratchSpace *)(bytes - sizeof(Nucleus_Interpreter_ScratchSpace));
     scratchSpace->next = context->scratchSpaces; context->scratchSpaces = scratchSpace;
+}
+
+Nucleus_Interpreter_NonNull() void
+Nucleus_Interpreter_gc
+    (
+        Nucleus_Interpreter_Context *context
+    )
+{
+    Nucleus_Interpreter_GC *gc = &(NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc);
+    do
+    {
+        if (gc->state == Nucleus_Interpreter_GC_State_Idle)
+        {
+            gc->state = Nucleus_Interpreter_GC_State_Premark;
+        }
+        else if (gc->state == Nucleus_Interpreter_GC_State_Premark)
+        {
+            Nucleus_Interpreter_GC_Heap_premark(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->generalHeap));
+            Nucleus_Interpreter_GC_Heap_premark(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->stringHeap));
+            gc->state = Nucleus_Interpreter_GC_State_Mark;
+        }
+        else if (gc->state == Nucleus_Interpreter_GC_State_Mark)
+        {
+            while (gc->gray)
+            {
+                Nucleus_Interpreter_GC_Object *object = gc->gray; gc->gray = object->gray;
+                Nucleus_Interpreter_GC_Object_Visit *visit = Nucleus_Interpreter_GC_Object_getVisitor(context, object);
+                if (visit)
+                {
+                    visit(context, object);
+                }
+                Nucleus_Interpreter_GC_Object_setBlack(object);
+            }
+            gc->state = Nucleus_Interpreter_GC_State_Sweep;
+        }
+        if (gc->state == Nucleus_Interpreter_GC_State_Sweep)
+        {
+            Nucleus_Interpreter_GC_Heap_sweep(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->generalHeap));
+            Nucleus_Interpreter_GC_Heap_sweep(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->stringHeap));
+            gc->state = Nucleus_Interpreter_GC_State_Idle;
+        }
+    } while (gc->state == Nucleus_Interpreter_GC_State_Idle);
+}
+
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull(1) void
+Nucleus_Interpreter_visit
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_GC_Object *object
+    )
+{
+    // 
+    if (object && !Nucleus_Interpreter_GC_Object_isWhite(object))
+    {
+        NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc.gray = object;
+        object->next = NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc.gray;
+        Nucleus_Interpreter_GC_Object_setGray(object);
+    }
 }

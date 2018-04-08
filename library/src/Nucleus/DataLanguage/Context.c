@@ -189,10 +189,10 @@ Nucleus_DataLanguage_Context_deallocate
     )
 { Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context->context), p); }
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_HeapObject *
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Object *
 Nucleus_DataLanguage_Context_allocateObject
     (
         Nucleus_DataLanguage_Context *context,
         size_t numberOfBytes
     )
-{ return Nucleus_Interpreter_Context_allocateHeapObject(context->context, numberOfBytes); }
+{ return Nucleus_Interpreter_Context_allocateObject(context->context, numberOfBytes); }

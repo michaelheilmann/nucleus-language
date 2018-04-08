@@ -9,7 +9,8 @@ Nucleus_DataLanguage_Scanner_create
 {
     Nucleus_DataLanguage_Scanner *self = (Nucleus_DataLanguage_Scanner *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Scanner));
     initialize(context, self, skipComments);
-    ((Nucleus_DataLanguage_HeapObject *)(self))->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
+    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
+                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
     return self;
 }
 

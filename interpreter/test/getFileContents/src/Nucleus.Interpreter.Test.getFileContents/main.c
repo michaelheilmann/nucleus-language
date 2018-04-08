@@ -1,6 +1,6 @@
 #include "Nucleus/Interpreter/Context.h"
-#include "Nucleus/Interpreter/Context_getFileContents.h"
-#include "Nucleus/Interpreter/Context_setFileContents.h"
+#include "Nucleus/Interpreter/getFileContents.h"
+#include "Nucleus/Interpreter/setFileContents.h"
 #include "Nucleus/Interpreter/String.h"
 #include "Nucleus/Interpreter/UnitTesting.h"
 #include <stdlib.h>
@@ -14,7 +14,7 @@ test
     Nucleus_Interpreter_String *pathname = Nucleus_Interpreter_String_create(context,
                                                                              "data/helloworld.txt",
                                                                              strlen("data/helloworld.txt"));
-    Nucleus_Interpreter_String *contents = Nucleus_Interpreter_Context_getFileContentsString(context, pathname);
+    Nucleus_Interpreter_String *contents = Nucleus_Interpreter_getFileContentsString(context, pathname);
     Nucleus_Interpreter_String *reference = Nucleus_Interpreter_String_create(context,
                                                                               "Hello, World!\r\n",
                                                                               strlen("Hello, World!\r\n"));

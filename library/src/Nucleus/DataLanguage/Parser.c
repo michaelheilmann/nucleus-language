@@ -9,7 +9,8 @@ Nucleus_DataLanguage_Parser_create
 {
     Nucleus_DataLanguage_Parser *self = (Nucleus_DataLanguage_Parser *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Parser));
     initialize(context, self, scanner);
-    ((Nucleus_DataLanguage_HeapObject *)(self))->visit = (Nucleus_DataLanguage_HeapObject_Visit *)&visit;
+    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
+                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
     return self;
 }
 

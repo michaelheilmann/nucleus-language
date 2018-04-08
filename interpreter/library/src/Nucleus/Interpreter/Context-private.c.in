@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/Interpreter/Context-private.h.in"
 
 Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_ScratchSpace *

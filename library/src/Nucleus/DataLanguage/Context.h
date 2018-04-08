@@ -121,7 +121,7 @@ Nucleus_DataLanguage_Context_deallocate
         void *p
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_HeapObject *
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Object *
 Nucleus_DataLanguage_Context_allocateObject
     (
         Nucleus_DataLanguage_Context *context,
