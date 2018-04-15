@@ -9,8 +9,13 @@ Nucleus_DataLanguage_Scanner_create
 {
     Nucleus_DataLanguage_Scanner *self = (Nucleus_DataLanguage_Scanner *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Scanner));
     initialize(context, self, skipComments);
-    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
-                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
+    Nucleus_DataLanguage_Object_Type *type = Nucleus_DataLanguage_getOrCreateForeignType
+        (
+            context,
+            NULL,
+            NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit)
+        );
+    Nucleus_DataLanguage_Object_setType(context, NUCLEUS_DATALANGUAGE_OBJECT(self), type);
     return self;
 }
 

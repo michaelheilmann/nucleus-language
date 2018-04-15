@@ -6,7 +6,6 @@
 
 struct Nucleus_Interpreter_String
 {
-    Nucleus_Interpreter_GC_Object __parent;
     size_t hashValue;
     size_t numberOfBytes;
     char bytes[];

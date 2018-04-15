@@ -8,7 +8,6 @@
 
 struct Nucleus_DataLanguage_Scanner
 {
-    Nucleus_DataLanguage_Object _parent;
     Nucleus_DataLanguage_SourceIterator *sourceIterator;
 
     bool skipComments;

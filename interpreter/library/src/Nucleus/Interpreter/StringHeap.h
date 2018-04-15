@@ -6,6 +6,7 @@
 
 // Forward declaration.
 typedef struct Nucleus_Interpreter_String Nucleus_Interpreter_String;
+typedef struct Nucleus_Interpreter_GC_Tag Nucleus_Interpreter_GC_Tag;
 
 /// @ingroup interpreter
 /// @internal
@@ -16,7 +17,7 @@ typedef struct Nucleus_Interpreter_StringHeap Nucleus_Interpreter_StringHeap;
 struct Nucleus_Interpreter_StringHeap
 {
     Nucleus_Interpreter_GC_Heap __parent;
-    Nucleus_Interpreter_String **buckets;
+    Nucleus_Interpreter_GC_Tag **buckets;
     size_t size;
     size_t capacity;
 }; // struct Nucleus_Interpreter_StringHeap

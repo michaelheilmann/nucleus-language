@@ -7,7 +7,9 @@
 #include <stddef.h> // For size_t.
 
 // Forward declaration.
-typedef struct Nucleus_Interpreter_GC_Object Nucleus_Interpreter_GC_Object;
+typedef struct Nucleus_Interpreter_GC_Tag Nucleus_Interpreter_GC_Tag;
+//typedef struct Nucleus_Interpreter_GC_Object Nucleus_Interpreter_GC_Object;
+typedef struct Nucleus_Interpreter_GC_Type Nucleus_Interpreter_GC_Type;
 
 typedef enum Nucleus_Interpreter_GC_State Nucleus_Interpreter_GC_State;
 enum Nucleus_Interpreter_GC_State
@@ -22,7 +24,13 @@ typedef struct Nucleus_Interpreter_GC Nucleus_Interpreter_GC;
 struct Nucleus_Interpreter_GC
 {
     Nucleus_Interpreter_GC_State state;
-    Nucleus_Interpreter_GC_Object *gray; // List of gray objects.
+    struct
+    {
+        Nucleus_Interpreter_GC_Type **buckets;
+        size_t size;
+        size_t capacity;
+    } types;
+    Nucleus_Interpreter_GC_Tag *gray; // List of gray objects.
 }; // struct Nucleus_Interpreter_GC
 
 Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status

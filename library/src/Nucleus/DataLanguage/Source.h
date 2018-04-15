@@ -6,7 +6,6 @@
 
 struct Nucleus_DataLanguage_Source
 {
-    Nucleus_DataLanguage_Object __parent;
     DL_LineMap *lineMap; ///< @brief The line map.
     Nucleus_DataLanguage_String *name; ///< @brief The source name.
     Nucleus_DataLanguage_String *string; ///< @brief The source string.
