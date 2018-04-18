@@ -2,6 +2,7 @@
 #include "Nucleus/Interpreter/GeneralHeap.h"
 
 #include "Nucleus/Interpreter/GC/Object.h"
+#include "Nucleus/Interpreter/GC/Type.h"
 #include "Nucleus/Interpreter/Context.h"
 
 Nucleus_Interpreter_NonNull() static void
@@ -33,12 +34,12 @@ premark
     )
 {
     Nucleus_Interpreter_GC *gc = &(NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc);
-    for (Nucleus_Interpreter_GC_Object *object = generalHeap->objects; NULL != object; object = object->next)
+    for (Nucleus_Interpreter_GC_Tag *tag = generalHeap->objects; NULL != tag; tag = tag->next)
     {
-        if (Nucleus_Interpreter_GC_Object_isLocked(object) && Nucleus_Interpreter_GC_Object_isWhite(object))
+        if (Nucleus_Interpreter_GC_Tag_isLocked(tag) && Nucleus_Interpreter_GC_Tag_isWhite(tag))
         {
-            object->gray = gc->gray; gc->gray = object;
-            Nucleus_Interpreter_GC_Object_setGray(object);
+            tag->gray = gc->gray; gc->gray = tag;
+            Nucleus_Interpreter_GC_Tag_setGray(tag);
         }
     }
 }
@@ -52,12 +53,24 @@ sweep
 {
     while (generalHeap->objects)
     {
-        Nucleus_Interpreter_GC_Object *object = generalHeap->objects; generalHeap->objects = object->next;
-        if (object->finalize)
+        Nucleus_Interpreter_GC_Tag *tag = generalHeap->objects; generalHeap->objects = tag->next;
+        Nucleus_Interpreter_GC_Type *type = Nucleus_Interpreter_GC_Tag_getType(context, tag);
+        if (type)
         {
-            object->finalize(context, object); /// @todo Remove this cast.
+            if (Nucleus_Interpreter_GC_Type_isForeign(type))
+            {
+                if (type->foreignType.finalize)
+                {
+                    type->foreignType.finalize(context, tag2Address(tag));
+                }
+                Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context), tag);
+            }
+            else if (Nucleus_Interpreter_GC_Type_isArray(type))
+            {
+                Nucleus_Interpreter_GC_ArrayTag *arrayTag = tag2ArrayTag(tag);
+                Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context), arrayTag);
+            }
         }
-        Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context), object);
     }
 }
 

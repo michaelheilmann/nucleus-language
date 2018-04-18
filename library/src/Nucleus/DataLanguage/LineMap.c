@@ -138,10 +138,13 @@ DL_LineMap_create
 {
     DL_LineMap *self = (DL_LineMap *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_LineMap));
     initialize(context, self, source);
-    Nucleus_DataLanguage_Object_setFinalizer(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
-                                             NUCLEUS_DATALANGUAGE_OBJECT_FINALIZE(&finalize));
-    Nucleus_DataLanguage_Object_setVisitor(context, NUCLEUS_DATALANGUAGE_OBJECT(self),
-                                           NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit));
+    Nucleus_DataLanguage_Object_Type *type = Nucleus_DataLanguage_getOrCreateForeignType
+        (
+            context,
+            NUCLEUS_DATALANGUAGE_OBJECT_FINALIZE(&finalize),
+            NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit)
+        );
+    Nucleus_DataLanguage_Object_setType(context, NUCLEUS_DATALANGUAGE_OBJECT(self), type);
     return self;
 }
 

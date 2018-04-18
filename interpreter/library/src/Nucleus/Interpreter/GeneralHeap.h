@@ -4,7 +4,7 @@
 #include "Nucleus/Interpreter/GC/Heap.h"
 
 // Forward declaration.
-typedef struct Nucleus_Interpreter_GC_Object Nucleus_Interpreter_GC_Object;
+typedef struct Nucleus_Interpreter_GC_Tag Nucleus_Interpreter_GC_Tag;
 
 /// @ingroup interpreter
 /// @internal
@@ -16,7 +16,7 @@ struct Nucleus_Interpreter_GeneralHeap
 {
     Nucleus_Interpreter_GC_Heap __parent;
     /// @brief A null pointer or a pointer to the first element of the singly-linked list of @a Nucleus_Interpreter_Object) objects.
-    Nucleus_Interpreter_GC_Object *objects;
+    Nucleus_Interpreter_GC_Tag *objects;
 }; // struct Nucleus_Interpreter_GeneralHeap
 
 /// @ingroup interpreter

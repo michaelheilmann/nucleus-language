@@ -35,12 +35,12 @@ premark
 {
     for (size_t i = 0, n = stringHeap->capacity; i < n; ++i)
     {
-        Nucleus_Interpreter_GC_Object *object = NUCLEUS_INTERPRETER_GC_OBJECT(stringHeap->buckets[i]);
-        while (object)
+        Nucleus_Interpreter_GC_Tag *tag = stringHeap->buckets[i];
+        while (tag)
         {
-            if (Nucleus_Interpreter_GC_Object_isLocked(object))
+            if (Nucleus_Interpreter_GC_Tag_isLocked(tag))
             {
-                Nucleus_Interpreter_GC_Object_setBlack(object);
+                Nucleus_Interpreter_GC_Tag_setBlack(tag);
             }
         }
     }
@@ -55,10 +55,10 @@ sweep
 {
     for (size_t i = 0, n = stringHeap->capacity; i < n; ++i)
     {
-        Nucleus_Interpreter_String **bucket = &(stringHeap->buckets[i]);
+        Nucleus_Interpreter_GC_Tag **bucket = &(stringHeap->buckets[i]);
         while (*bucket)
         {
-            Nucleus_Interpreter_String *entry = *bucket; *bucket = NUCLEUS_INTERPRETER_STRING(NUCLEUS_INTERPRETER_GC_OBJECT(entry)->next);
+            Nucleus_Interpreter_GC_Tag *entry = *bucket; *bucket = entry->next;
             Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context), entry);
             --stringHeap->size;
         }
@@ -94,7 +94,7 @@ Nucleus_Interpreter_StringHeap_initialize
     if (!setjmp(jt.environment))
     {
         stringHeap->buckets = Nucleus_Interpreter_CoreContext_allocateArray(NUCLEUS_INTERPRETER_CORECONTEXT(context),
-                                                                            16, sizeof(Nucleus_Interpreter_String *));
+                                                                            16, sizeof(Nucleus_Interpreter_GC_Tag *));
         Nucleus_Interpreter_CoreContext_popJumpTarget(NUCLEUS_INTERPRETER_CORECONTEXT(context));
     }
     else

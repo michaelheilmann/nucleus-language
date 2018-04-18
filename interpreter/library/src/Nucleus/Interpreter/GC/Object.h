@@ -2,10 +2,24 @@
 #pragma once
 
 #include "Nucleus/Interpreter/Annotations.h"
+#include "Nucleus/Interpreter/Status.h"
+#include "Nucleus/Interpreter/GC/Finalize.h"
+#include "Nucleus/Interpreter/GC/Visit.h"
+#include "Nucleus/Types/Size.h"
+#include "Nucleus/Types/Natural.h"
+#include "Nucleus/Types/HashValue.h"
 #include <stdbool.h> // For bool.
-#include <stddef.h> // For size_t.
 
-// Forward declaration.
+#define Nucleus_Interpreter_GC_Version_Major (0)
+#define Nucleus_Interpreter_GC_Version_Minor (1)
+
+#define Nucleus_Interpreter_GC_Version_GreaterThanOrEqualTo(major, minor) \
+    ((Nucleus_Interpreter_GC_Version_Major > (major)) || \
+        ((Nucleus_Interpreter_GC_Version_Major == (major)) && (Nucleus_Interpreter_GC_Version_Minor >= (minor))))
+
+// Forward declarations.
+typedef struct Nucleus_Interpreter_GC Nucleus_Interpreter_GC;
+typedef struct Nucleus_Interpreter_GC_Type Nucleus_Interpreter_GC_Type;
 typedef struct Nucleus_Interpreter_Context Nucleus_Interpreter_Context;
 
 
@@ -31,128 +45,147 @@ typedef struct Nucleus_Interpreter_GC_Object Nucleus_Interpreter_GC_Object;
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/// @ingroup gc
-/// @internal
-/// @brief Unconditionally cast a @a (Nucleus_Interpreter_GC_Object_Finalize) or derived pointer to a @a (Nucleus_Interpreter_GC_Object_Finalize) pointer.
-#define NUCLEUS_INTERPRETER_GC_OBJECT_FINALIZE(pointer) ((Nucleus_Interpreter_GC_Object_Finalize *)(pointer))
+// The tag with which the GC prefixes allocated memory.
+typedef struct Nucleus_Interpreter_GC_Tag Nucleus_Interpreter_GC_Tag;
 
-/// @ingroup gc
-/// @internal
-/// @brief Type of a finalizer function of GC objects.
-typedef void Nucleus_Interpreter_GC_Object_Finalize(Nucleus_Interpreter_Context *context, Nucleus_Interpreter_GC_Object *object);
+struct Nucleus_Interpreter_GC_Tag
+{
+    Nucleus_Interpreter_GC_Tag *next;
+    char flags;
+    Nucleus_Size lockCount;
+    Nucleus_Interpreter_GC_Tag *gray;
+    Nucleus_Interpreter_GC_Type *type;
+}; // struct Nucleus_Interpreter_GC_Tag
+
+// The tag with which the GC prefixes allocated array memory.
+// This tag preceeds the Nucleus_Interpreter_GC_Tag.
+typedef struct Nucleus_Interpreter_GC_ArrayTag Nucleus_Interpreter_GC_ArrayTag;
+
+struct Nucleus_Interpreter_GC_ArrayTag
+{
+    size_t length; ///< The length of the array i.e. its number of elements. @a 0 is a valid length.
+}; // struct Nucleus_Interpreter_GC_ArrayTag
+
+// TODO: Rename to Nucleus_Interpreter_GC_adrToTag
+Nucleus_Interpreter_GC_Tag *
+address2Tag
+    (
+        void *adr
+    );
+
+// TODO: Rename to Nucleus_Interpreter_GC_tag2Adr
+void *
+tag2Address
+    (
+        Nucleus_Interpreter_GC_Tag *tag
+    );
+
+Nucleus_Interpreter_GC_ArrayTag *
+tag2ArrayTag
+    (
+        Nucleus_Interpreter_GC_Tag *tag
+    );
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/// @ingroup gc
-/// @internal
-/// @brief Unconditionally cast a @a (Nucleus_Interpreter_GC_Object_Visit) or derived pointer to a @a (Nucleus_Interpreter_GC_Object_Visit) pointer.
-#define NUCLEUS_INTERPRETER_GC_OBJECT_VISIT(pointer) ((Nucleus_Interpreter_GC_Object_Visit *)(pointer))
-
-/// @ingroup gc
-/// @internal
-/// @brief Type of a finalizer function of GC objects.
-typedef void Nucleus_Interpreter_GC_Object_Visit(Nucleus_Interpreter_Context *context, Nucleus_Interpreter_GC_Object *object);
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
+// TODO Remove this.
 struct Nucleus_Interpreter_GC_Object
 {
-    Nucleus_Interpreter_GC_Object *next;
-    char flags;
-    size_t lockCount;
-    Nucleus_Interpreter_GC_Object *gray;
-    Nucleus_Interpreter_GC_Object_Finalize *finalize;
-    Nucleus_Interpreter_GC_Object_Visit *visit;
+    int dummy;
 }; // struct Nucleus_Interpreter_GC_Object
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_lock
+Nucleus_Interpreter_GC_Tag_lock
     (
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_unlock
+Nucleus_Interpreter_GC_Tag_unlock
     (
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() bool
-Nucleus_Interpreter_GC_Object_isLocked
+Nucleus_Interpreter_GC_Tag_isLocked
     (
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
     );
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_GC_Object_Finalize *
-Nucleus_Interpreter_GC_Object_getFinalizer
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_GC_Type *
+Nucleus_Interpreter_GC_Tag_getType
     (
         Nucleus_Interpreter_Context *context,
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
     );
 
-Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_setFinalizer
+Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull(1, 2) void
+Nucleus_Interpreter_GC_Tag_setType
     (
         Nucleus_Interpreter_Context *context,
-        Nucleus_Interpreter_GC_Object *object,
-        Nucleus_Interpreter_GC_Object_Finalize *finalize
-    );
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() Nucleus_Interpreter_GC_Object_Visit *
-Nucleus_Interpreter_GC_Object_getVisitor
-    (
-        Nucleus_Interpreter_Context *context,
-        Nucleus_Interpreter_GC_Object *object
-    );
-
-Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_setVisitor
-    (
-        Nucleus_Interpreter_Context *context,
-        Nucleus_Interpreter_GC_Object *object,
-        Nucleus_Interpreter_GC_Object_Visit *visit
+        Nucleus_Interpreter_GC_Tag *tag,
+        Nucleus_Interpreter_GC_Type *type
     );
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 Nucleus_Interpreter_NonNull() bool
-Nucleus_Interpreter_GC_Object_isGray
+Nucleus_Interpreter_GC_Tag_isGray
     (
-        const Nucleus_Interpreter_GC_Object *object
+        const Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_setGray
+Nucleus_Interpreter_GC_Tag_setGray
     (
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NonNull() bool
-Nucleus_Interpreter_GC_Object_isBlack
+Nucleus_Interpreter_GC_Tag_isBlack
     (
-        const Nucleus_Interpreter_GC_Object *object
+        const Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_setBlack
+Nucleus_Interpreter_GC_Tag_setBlack
     (
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NonNull() bool
-Nucleus_Interpreter_GC_Object_isWhite
+Nucleus_Interpreter_GC_Tag_isWhite
     (
-        const Nucleus_Interpreter_GC_Object *object
+        const Nucleus_Interpreter_GC_Tag *tag
     );
 
 Nucleus_Interpreter_NonNull() void
-Nucleus_Interpreter_GC_Object_setWhite
+Nucleus_Interpreter_GC_Tag_setWhite
     (
-        Nucleus_Interpreter_GC_Object *object
+        Nucleus_Interpreter_GC_Tag *tag
+    );
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
+Nucleus_Interpreter_GC_allocateManaged
+    (
+        Nucleus_Interpreter_GC *gc,
+        Nucleus_Interpreter_GC_Tag **tag,
+        size_t size,
+        Nucleus_Interpreter_GC_Tag **list
+    );
+
+Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
+Nucleus_Interpreter_GC_allocateManagedArray
+    (
+        Nucleus_Interpreter_GC *gc,
+        Nucleus_Interpreter_GC_Tag **tag,
+        size_t numberOfElements,
+        Nucleus_Interpreter_GC_Type *arrayType,
+        Nucleus_Interpreter_GC_Tag **list
     );

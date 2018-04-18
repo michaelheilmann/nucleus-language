@@ -47,8 +47,9 @@ lookup
 {
     unsigned int hashValue = Nucleus_Interpreter_hashMemory(context, bytes, numberOfBytes);
     unsigned int hashIndex = hashValue % stringHeap->capacity;
-    for (Nucleus_Interpreter_String *string = NUCLEUS_INTERPRETER_STRING(stringHeap->buckets[hashIndex]); NULL != string; string = NUCLEUS_INTERPRETER_STRING(NUCLEUS_INTERPRETER_GC_OBJECT(string)->next))
+    for (Nucleus_Interpreter_GC_Tag *tag = stringHeap->buckets[hashIndex]; NULL != tag; tag = tag->next)
     {
+        Nucleus_Interpreter_String *string = tag2Address(tag);
         if (hashValue == string->hashValue && numberOfBytes == string->numberOfBytes)
         {
             bool result = false;
@@ -80,14 +81,16 @@ create
         LookupResult *lookupResult
     )
 {
-    Nucleus_Interpreter_String *string = Nucleus_Interpreter_CoreContext_allocate(NUCLEUS_INTERPRETER_CORECONTEXT(context),
-                                                                                  sizeof(Nucleus_Interpreter_String) +
-                                                                                  numberOfBytes);
+    Nucleus_Interpreter_GC_Tag *tag;
+    Nucleus_Interpreter_Status status;
+    status = Nucleus_Interpreter_GC_allocateManaged(&NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc,
+                                                    &tag,
+                                                    sizeof(Nucleus_Interpreter_String) + numberOfBytes,
+                                                    &context->stringHeap.buckets[lookupResult->hashIndex]);
+    Nucleus_Interpreter_String *string = tag2Address(tag);
     string->numberOfBytes = numberOfBytes;
     string->hashValue = lookupResult->hashValue;
     Nucleus_copyMemory(string->bytes, bytes, numberOfBytes);
-    NUCLEUS_INTERPRETER_GC_OBJECT(string)->next = NUCLEUS_INTERPRETER_GC_OBJECT(context->stringHeap.buckets[lookupResult->hashIndex]);
-    context->stringHeap.buckets[lookupResult->hashIndex] = string;
     context->stringHeap.size++;
     lookupResult->string = string;
 }

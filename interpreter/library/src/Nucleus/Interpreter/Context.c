@@ -7,6 +7,8 @@
 #include <assert.h>
 #include "Nucleus/Memory.h" /// @todo Remove this.
 #include "Nucleus/Interpreter/GC/Object.h"
+#include "Nucleus/Interpreter/GC/Type.h"
+#include "Nucleus/Interpreter/GC/OnVisit.h"
 #include "Nucleus/Interpreter/JumpTarget.h"
 
 Nucleus_Interpreter_NonNull() Nucleus_Interpreter_Status
@@ -123,12 +125,18 @@ Nucleus_Interpreter_Context_allocateObject
         size_t numberOfBytes
     )
 {
-    Nucleus_Interpreter_Object *object = Nucleus_Interpreter_CoreContext_allocate(NUCLEUS_INTERPRETER_CORECONTEXT(context),
-                                                                                  numberOfBytes);
-    object->next = context->generalHeap.objects;
-    context->generalHeap.objects = object;
-    Nucleus_Interpreter_GC_Object_setWhite(object);
-    return object;
+    Nucleus_Status status;
+    Nucleus_Interpreter_GC_Tag *tag;
+    status = Nucleus_Interpreter_GC_allocateManaged(&NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc,
+                                                    &tag,
+                                                    numberOfBytes,
+                                                    &context->generalHeap.objects);
+    if (status)
+    {
+        Nucleus_Interpreter_CoreContext_setStatus(NUCLEUS_INTERPRETER_CORECONTEXT(context), status);
+        Nucleus_Interpreter_CoreContext_jump(NUCLEUS_INTERPRETER_CORECONTEXT(context));
+    }
+    return tag2Address(tag);
 }
 
 Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() char *
@@ -182,42 +190,7 @@ Nucleus_Interpreter_gc
     (
         Nucleus_Interpreter_Context *context
     )
-{
-    Nucleus_Interpreter_GC *gc = &(NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc);
-    do
-    {
-        if (gc->state == Nucleus_Interpreter_GC_State_Idle)
-        {
-            gc->state = Nucleus_Interpreter_GC_State_Premark;
-        }
-        else if (gc->state == Nucleus_Interpreter_GC_State_Premark)
-        {
-            Nucleus_Interpreter_GC_Heap_premark(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->generalHeap));
-            Nucleus_Interpreter_GC_Heap_premark(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->stringHeap));
-            gc->state = Nucleus_Interpreter_GC_State_Mark;
-        }
-        else if (gc->state == Nucleus_Interpreter_GC_State_Mark)
-        {
-            while (gc->gray)
-            {
-                Nucleus_Interpreter_GC_Object *object = gc->gray; gc->gray = object->gray;
-                Nucleus_Interpreter_GC_Object_Visit *visit = Nucleus_Interpreter_GC_Object_getVisitor(context, object);
-                if (visit)
-                {
-                    visit(context, object);
-                }
-                Nucleus_Interpreter_GC_Object_setBlack(object);
-            }
-            gc->state = Nucleus_Interpreter_GC_State_Sweep;
-        }
-        if (gc->state == Nucleus_Interpreter_GC_State_Sweep)
-        {
-            Nucleus_Interpreter_GC_Heap_sweep(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->generalHeap));
-            Nucleus_Interpreter_GC_Heap_sweep(context, NUCLEUS_INTERPRETER_GC_HEAP(&context->stringHeap));
-            gc->state = Nucleus_Interpreter_GC_State_Idle;
-        }
-    } while (gc->state == Nucleus_Interpreter_GC_State_Idle);
-}
+{ Nucleus_Interpreter_GC_onRun(context); }
 
 Nucleus_Interpreter_NoError() Nucleus_Interpreter_NonNull(1) void
 Nucleus_Interpreter_visit
@@ -226,11 +199,14 @@ Nucleus_Interpreter_visit
         Nucleus_Interpreter_GC_Object *object
     )
 {
-    // 
-    if (object && !Nucleus_Interpreter_GC_Object_isWhite(object))
+    if (object)
     {
-        NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc.gray = object;
-        object->next = NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc.gray;
-        Nucleus_Interpreter_GC_Object_setGray(object);
+        Nucleus_Interpreter_GC_Tag *tag = address2Tag(object);
+        if (!Nucleus_Interpreter_GC_Tag_isWhite(tag))
+        {
+            NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc.gray = tag;
+            tag->next = NUCLEUS_INTERPRETER_CORECONTEXT(context)->gc.gray;
+            Nucleus_Interpreter_GC_Tag_setGray(tag);
+        }
     }
 }
