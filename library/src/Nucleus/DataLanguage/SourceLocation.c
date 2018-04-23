@@ -1,44 +1,7 @@
-#include "Nucleus/DataLanguage/SourceLocation.h"
+// Copyright (c) Michael Heilmann 2018
+#include "Nucleus/DataLanguage/SourceLocation-private.c.i"
 
 #include "Nucleus/DataLanguage/Context.h"
-
-Nucleus_DataLanguage_NonNull() static void
-initialize
-    (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_SourceLocation *self,
-        Nucleus_DataLanguage_Source *source,
-        size_t offset
-    );
-
-Nucleus_DataLanguage_NonNull() static void
-visit
-    (
-        Nucleus_Interpreter_Context *context,
-        Nucleus_DataLanguage_SourceLocation *self
-    );
-
-Nucleus_DataLanguage_NonNull() static void
-initialize
-    (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_SourceLocation *self,
-        Nucleus_DataLanguage_Source *source,
-        size_t offset
-    )
-{
-    self->source = source;
-    self->offset = offset;
-}
-
-Nucleus_DataLanguage_NonNull() static void
-visit
-    (
-        Nucleus_Interpreter_Context *context,
-        Nucleus_DataLanguage_SourceLocation *sourceLocation
-    )
-{ /**@todo Add implementation.*/ }
-
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceLocation *
 Nucleus_DataLanguage_SourceLocation_create
@@ -50,13 +13,8 @@ Nucleus_DataLanguage_SourceLocation_create
 {
     Nucleus_DataLanguage_SourceLocation *self = (Nucleus_DataLanguage_SourceLocation *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_SourceLocation));
     initialize(context, self, source, offset);
-    Nucleus_DataLanguage_Object_Type *type = Nucleus_DataLanguage_getOrCreateForeignType
-        (
-            context,
-            NULL,
-            NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit)
-        );
-    Nucleus_DataLanguage_Object_setType(context, NUCLEUS_DATALANGUAGE_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 

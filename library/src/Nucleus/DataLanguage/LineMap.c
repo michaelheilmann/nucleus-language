@@ -1,10 +1,5 @@
-#include "Nucleus/DataLanguage/LineMap.h"
-
-#include "Nucleus/DataLanguage/Import-Symbol.h"
-#include "Nucleus/DataLanguage/Import-StringIterator.h"
-#include "Nucleus/Memory.h"
-
-#define MAX_LINES (5012)
+// Copyright (c) Michael Heilmann 2018
+#include "Nucleus/DataLanguage/LineMap-private.c.in"
 
 Nucleus_DataLanguage_NonNull() static void
 build
@@ -19,7 +14,7 @@ Nucleus_DataLanguage_NonNull() static void
 initialize
     (
         Nucleus_DataLanguage_Context *context,
-        DL_LineMap *lineMap,
+        Nucleus_DataLanguage_LineMap *lineMap,
         Nucleus_DataLanguage_String *source
     );
 
@@ -102,7 +97,7 @@ Nucleus_DataLanguage_NonNull() static void
 initialize
     (
         Nucleus_DataLanguage_Context *context,
-        DL_LineMap *lineMap,
+        Nucleus_DataLanguage_LineMap *lineMap,
         Nucleus_DataLanguage_String *source
     )
 {
@@ -110,49 +105,25 @@ initialize
     build(context, source, &lineMap->lines, &lineMap->numberOfLines);
 }
 
-Nucleus_DataLanguage_NonNull() static void
-visit
-    (
-        Nucleus_DataLanguage_Context *context,
-        DL_LineMap *lineMap
-    )
-{}
-
-Nucleus_DataLanguage_NonNull() static void
-finalize
-    (
-        Nucleus_DataLanguage_Context *context,
-        DL_LineMap *lineMap
-    )
-{
-    free(lineMap->lines);
-    lineMap->lines = NULL;
-}
-
-Nucleus_DataLanguage_NonNull() DL_LineMap *
-DL_LineMap_create
+Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_LineMap *
+Nucleus_DataLanguage_LineMap_create
     (
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_String *source
     )
 {
-    DL_LineMap *self = (DL_LineMap *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_LineMap));
+    Nucleus_DataLanguage_LineMap *self = (Nucleus_DataLanguage_LineMap *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_LineMap));
     initialize(context, self, source);
-    Nucleus_DataLanguage_Object_Type *type = Nucleus_DataLanguage_getOrCreateForeignType
-        (
-            context,
-            NUCLEUS_DATALANGUAGE_OBJECT_FINALIZE(&finalize),
-            NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit)
-        );
-    Nucleus_DataLanguage_Object_setType(context, NUCLEUS_DATALANGUAGE_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
 Nucleus_DataLanguage_NonNull() size_t
-DL_LineMap_getLineIndex
+Nucleus_DataLanguage_LineMap_getLineIndex
     (
         Nucleus_DataLanguage_Context *context,
-        DL_LineMap *lineMap,
+        Nucleus_DataLanguage_LineMap *lineMap,
         size_t offset
     )
 {

@@ -1,6 +1,10 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Forward.h"
+
+// Forward declaration.
+typedef struct Nucleus_DataLanguage_Scanner Nucleus_DataLanguage_Scanner;
 
 typedef struct DL_PEGNode DL_PEGNode;
 

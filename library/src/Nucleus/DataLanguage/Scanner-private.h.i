@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Scanner.h"
@@ -46,6 +47,8 @@ struct Nucleus_DataLanguage_Scanner
     DL_PEGNode *exponentIndicator;
 };
 
+static Nucleus_Interpreter_Type *g_type = NULL;
+
 Nucleus_DataLanguage_NonNull() static void
 initialize
     (
@@ -57,8 +60,19 @@ initialize
 Nucleus_DataLanguage_NonNull() static void
 visit
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *self
+    );
+
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_Interpreter_Type *
+getOrCreateType
+    (
+        Nucleus_Interpreter_Context *context
+    );
+
+Nucleus_Interpreter_NoError() static void
+finalizeType
+    (
     );
 
 Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_String *

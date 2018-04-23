@@ -2,3 +2,7 @@
 	path = dependencies/nucleus
 	url = https://github.com/primordialmachine/nucleus
 	branch = master
+[submodule "dependencies/nucleus-interpreter"]
+	path = dependencies/nucleus-interpreter
+	url = https://github.com/primordialmachine/nucleus-interpreter.git
+	branch = master

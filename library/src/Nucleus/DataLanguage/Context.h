@@ -1,5 +1,4 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Forward.h"
@@ -121,7 +120,7 @@ Nucleus_DataLanguage_Context_deallocate
         void *p
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Object *
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_Interpreter_Object *
 Nucleus_DataLanguage_Context_allocateObject
     (
         Nucleus_DataLanguage_Context *context,

@@ -1,15 +1,22 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Forward.h"
 
+// Forward declarations.
+typedef struct Nucleus_DataLanguage_LineMap Nucleus_DataLanguage_LineMap;
+typedef struct Nucleus_DataLanguage_Source Nucleus_DataLanguage_Source;
+
+/// @ingroup Nucleus-DataLanguage
+/// @brief Type of a Nucleus Data Language source.
+typedef struct Nucleus_DataLanguage_Source Nucleus_DataLanguage_Source;
+
 struct Nucleus_DataLanguage_Source
 {
-    DL_LineMap *lineMap; ///< @brief The line map.
+    Nucleus_DataLanguage_LineMap *lineMap; ///< @brief The line map.
     Nucleus_DataLanguage_String *name; ///< @brief The source name.
     Nucleus_DataLanguage_String *string; ///< @brief The source string.
-};
+}; // struct Nucleus_DataLanguage_Source
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Source *
 Nucleus_DataLanguage_Source_create

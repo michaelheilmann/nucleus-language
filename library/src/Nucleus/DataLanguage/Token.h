@@ -1,9 +1,15 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Forward.h"
 #include "Nucleus/DataLanguage/Token_Kind.h"
+
+// Forward declaration.
+typedef struct Nucleus_DataLanguage_SourceLocation Nucleus_DataLanguage_SourceLocation;
+
+/// @ingroup Nucleus-DataLanguage
+/// @brief Type of a Data Language token.
+typedef struct Nucleus_DataLanguage_Token Nucleus_DataLanguage_Token;
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Token *
 Nucleus_DataLanguage_Token_create

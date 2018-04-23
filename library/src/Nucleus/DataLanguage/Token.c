@@ -1,60 +1,5 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
-#include "Nucleus/DataLanguage/Token.h"
-
-#include "Nucleus/DataLanguage/Context.h"
-
-Nucleus_DataLanguage_NonNull() static void
-initialize
-    (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_Token *self,
-        Nucleus_DataLanguage_Token_Kind kind,
-        Nucleus_DataLanguage_SourceLocation *begin,
-        Nucleus_DataLanguage_SourceLocation *end,
-        Nucleus_DataLanguage_String *text
-    );
-
-Nucleus_DataLanguage_NonNull() static void
-visit
-    (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_Token *self
-    );
-
-struct Nucleus_DataLanguage_Token
-{
-    Nucleus_DataLanguage_Object __parent;
-    Nucleus_DataLanguage_Token_Kind kind;
-    Nucleus_DataLanguage_SourceLocation *begin,
-                      *end;
-    Nucleus_DataLanguage_String *text;
-};
-
-Nucleus_DataLanguage_NonNull() static void
-visit
-    (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_Token *self
-    )
-{}
-
-Nucleus_DataLanguage_NonNull() static void
-initialize
-    (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_Token *self,
-        Nucleus_DataLanguage_Token_Kind kind,
-        Nucleus_DataLanguage_SourceLocation *begin,
-        Nucleus_DataLanguage_SourceLocation *end,
-        Nucleus_DataLanguage_String *text
-    )
-{
-    self->kind = kind;
-    self->begin = begin;
-    self->end = end;
-    self->text = text;
-}
+// Copyright (c) Michael Heilmann 2017, 2018
+#include "Nucleus/DataLanguage/Token-private.c.i"
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Token *
 Nucleus_DataLanguage_Token_create
@@ -68,13 +13,8 @@ Nucleus_DataLanguage_Token_create
 {
     Nucleus_DataLanguage_Token *self = (Nucleus_DataLanguage_Token *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Token));
     initialize(context, self, kind, begin, end, text);
-    Nucleus_DataLanguage_Object_Type *type = Nucleus_DataLanguage_getOrCreateForeignType
-        (
-            context,
-            NULL,
-            NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit)
-        );
-    Nucleus_DataLanguage_Object_setType(context, NUCLEUS_DATALANGUAGE_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
