@@ -8,6 +8,31 @@ visit
     )
 {}
 
+Nucleus_Interpreter_NoError() static void
+finalizeType
+    (
+    )
+{ g_type = NULL; }
+
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_Interpreter_Type *
+getOrCreateType
+    (
+        Nucleus_Interpreter_Context *context
+    )
+{
+    if (!g_type)
+    {
+        g_type = Nucleus_Interpreter_getOrCreateForeignType
+            (
+                context,
+                NULL,
+                NUCLEUS_INTERPRETER_VISITFOREIGNOBJECT(&visit),
+                NUCLEUS_INTERPRETER_FINALIZETYPE(&finalizeType)
+            );
+    }
+    return g_type;
+}
+
 Nucleus_DataLanguage_NonNull() static void
 initializeUnitNode
     (

@@ -1,0 +1,48 @@
+#include "Nucleus/DataLanguage/LineMap-private.h.in"
+
+Nucleus_Interpreter_NoError() static void
+finalizeType
+    (
+    )
+{ g_type = NULL; }
+    
+Nucleus_ReturnNonNull() static Nucleus_Interpreter_Type *
+getOrCreateType
+    (
+        Nucleus_Interpreter_Context *context
+    )
+{
+    if (!g_type)
+    {
+        g_type = Nucleus_Interpreter_getOrCreateForeignType
+            (
+                context,
+                NUCLEUS_INTERPRETER_FINALIZEFOREIGNOBJECT(&finalize),
+                NUCLEUS_INTERPRETER_VISITFOREIGNOBJECT(&visit),
+                NUCLEUS_INTERPRETER_FINALIZETYPE(&finalizeType)
+            );
+    }
+    return g_type;
+}
+
+Nucleus_Interpreter_NonNull() static void
+finalize
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_DataLanguage_LineMap *lineMap
+    )
+{
+    if (lineMap->lines)
+    {
+        Nucleus_deallocateMemory(lineMap->lines);
+        lineMap->lines = NULL;
+    }
+}
+
+Nucleus_Interpreter_NonNull() static void
+visit
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_DataLanguage_LineMap *lineMap
+    )
+{}

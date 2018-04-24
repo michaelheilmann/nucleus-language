@@ -1,9 +1,12 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Forward.h"
 #include "Nucleus/DataLanguage/SourceLocation.h"
+
+/// @ingroup Nucleus-DataLanguage
+/// @brief Type of a Nucleus Data Language source iterator.
+typedef struct Nucleus_DataLanguage_SourceIterator Nucleus_DataLanguage_SourceIterator;
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_SourceIterator *
 Nucleus_DataLanguage_SourceIterator_create

@@ -1,0 +1,36 @@
+#pragma once
+
+#include "Nucleus/DataLanguage/LineMap.h"
+
+#include "Nucleus/DataLanguage/Import-Symbol.h"
+#include "Nucleus/DataLanguage/Import-StringIterator.h"
+#include "Nucleus/Memory.h"
+
+#define MAX_LINES (5012)
+
+static Nucleus_Interpreter_Type *g_type = NULL;
+
+Nucleus_Interpreter_NonNull() static void
+visit
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_DataLanguage_LineMap *lineMap
+    );
+
+Nucleus_Interpreter_NonNull() static void
+finalize
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_DataLanguage_LineMap *lineMap
+    );
+
+Nucleus_Interpreter_NoError() static void
+finalizeType
+    (
+    );
+
+Nucleus_Interpreter_ReturnNonNull() static Nucleus_Interpreter_Type *
+getOrCreateType
+    (
+        Nucleus_Interpreter_Context *context
+    );

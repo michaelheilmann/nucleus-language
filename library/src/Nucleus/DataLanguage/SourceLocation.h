@@ -1,6 +1,14 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Forward.h"
+
+// Forward declaration.
+typedef struct Nucleus_DataLanguage_Source Nucleus_DataLanguage_Source;
+
+/// @ingroup Nucleus-DataLanguage
+/// @brief Type of a Nucleus Data Language source location.
+typedef struct Nucleus_DataLanguage_SourceLocation Nucleus_DataLanguage_SourceLocation;
 
 struct Nucleus_DataLanguage_SourceLocation
 {

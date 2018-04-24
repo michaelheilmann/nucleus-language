@@ -5,7 +5,6 @@
 
 struct Nucleus_DataLanguage_AST_Node
 {
-    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_AST_NodeKind kind;
     union
     {
@@ -17,11 +16,24 @@ struct Nucleus_DataLanguage_AST_Node
     };
 }; // struct Nucleus_DataLanguage_AST_Node
 
+static Nucleus_Interpreter_Type *g_type = NULL;
+
 Nucleus_DataLanguage_NonNull() static void
 visit
     (
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_AST_Node *node
+    );
+
+Nucleus_Interpreter_NoError() static void
+finalizeType
+    (
+    );
+
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_Interpreter_Type *
+getOrCreateType
+    (
+        Nucleus_Interpreter_Context *context
     );
 
 Nucleus_DataLanguage_NonNull() static void

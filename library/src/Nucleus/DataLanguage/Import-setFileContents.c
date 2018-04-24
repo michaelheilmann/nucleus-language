@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/DataLanguage/Import-setFileContents.h"
 
 #include "Nucleus/DataLanguage/Context.h"

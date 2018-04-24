@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #pragma once
 
 #include "Nucleus/DataLanguage/Parser.h"
@@ -8,10 +9,11 @@
 
 struct Nucleus_DataLanguage_Parser
 {
-    Nucleus_DataLanguage_Object __parent;
     Nucleus_DataLanguage_Scanner *scanner;
     Nucleus_DataLanguage_Token *token;
 }; // struct Nucleus_DataLanguage_Parser
+
+static Nucleus_Interpreter_Type *g_type = NULL;
 
 Nucleus_DataLanguage_NonNull() static void
 initialize
@@ -26,6 +28,17 @@ visit
     (
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_Parser *self
+    );
+
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_Interpreter_Type *
+getOrCreateType
+    (
+        Nucleus_Interpreter_Context *context
+    );
+
+Nucleus_Interpreter_NoError() static void
+finalizeType
+    (
     );
 
 Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_Token *

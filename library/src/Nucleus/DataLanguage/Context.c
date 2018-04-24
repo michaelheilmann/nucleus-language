@@ -1,5 +1,4 @@
-/// @author Michael Heilmann
-/// @copyright Copyright (c) Michael Heilmann 2017, 2018
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/DataLanguage/Context.h"
 
 #include "Nucleus/Interpreter/Context.h"
@@ -117,21 +116,21 @@ Nucleus_DataLanguage_Context_pushJumpTarget
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_JumpTarget *jumpTarget
     )
-{ Nucleus_Interpreter_CoreContext_pushJumpTarget(NUCLEUS_INTERPRETER_CORECONTEXT(context->context), jumpTarget); }
+{ Nucleus_Interpreter_ProcessContext_pushJumpTarget(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context), jumpTarget); }
 
 Nucleus_DataLanguage_NoError() Nucleus_DataLanguage_NonNull() void
 Nucleus_DataLanguage_Context_popJumpTarget
     (
         Nucleus_DataLanguage_Context *context
     )
-{ Nucleus_Interpreter_CoreContext_popJumpTarget(NUCLEUS_INTERPRETER_CORECONTEXT(context->context)); }
+{ Nucleus_Interpreter_ProcessContext_popJumpTarget(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context)); }
 
 Nucleus_DataLanguage_NoReturn() Nucleus_DataLanguage_NonNull() void
 Nucleus_DataLanguage_Context_jump
     (
         Nucleus_DataLanguage_Context *context
     )
-{ Nucleus_Interpreter_CoreContext_jump(NUCLEUS_INTERPRETER_CORECONTEXT(context->context)); }
+{ Nucleus_Interpreter_ProcessContext_jump(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context)); }
 
 Nucleus_DataLanguage_NoReturn() Nucleus_DataLanguage_NonNull() void
 Nucleus_DataLanguage_Context_raiseError
@@ -139,15 +138,15 @@ Nucleus_DataLanguage_Context_raiseError
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_Status status
     )
-{ Nucleus_Interpreter_CoreContext_setStatus(NUCLEUS_INTERPRETER_CORECONTEXT(context->context), status);
-  Nucleus_Interpreter_CoreContext_jump(NUCLEUS_INTERPRETER_CORECONTEXT(context->context)); }
+{ Nucleus_Interpreter_ProcessContext_setStatus(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context), status);
+  Nucleus_Interpreter_ProcessContext_jump(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context)); }
 
 Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Status
 Nucleus_DataLanguage_Context_getStatus
     (
         Nucleus_DataLanguage_Context *context
     )
-{ return Nucleus_Interpreter_CoreContext_getStatus(NUCLEUS_INTERPRETER_CORECONTEXT(context->context)); }
+{ return Nucleus_Interpreter_ProcessContext_getStatus(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context)); }
 
 Nucleus_DataLanguage_NonNull() void
 Nucleus_DataLanguage_Context_setStatus
@@ -155,7 +154,7 @@ Nucleus_DataLanguage_Context_setStatus
         Nucleus_DataLanguage_Context *context,
         Nucleus_DataLanguage_Status status
     )
-{ Nucleus_Interpreter_CoreContext_setStatus(NUCLEUS_INTERPRETER_CORECONTEXT(context->context), status); }
+{ Nucleus_Interpreter_ProcessContext_setStatus(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context), status); }
 
 Nucleus_DataLanguage_NonNull() char *
 Nucleus_DataLanguage_Context_acquireScratchSpace
@@ -179,7 +178,7 @@ Nucleus_DataLanguage_Context_allocate
         Nucleus_DataLanguage_Context *context,
         size_t numberOfBytes
     )
-{ return Nucleus_Interpreter_CoreContext_allocate(NUCLEUS_INTERPRETER_CORECONTEXT(context->context), numberOfBytes); }
+{ return Nucleus_Interpreter_ProcessContext_allocate(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context), numberOfBytes); }
 
 Nucleus_DataLanguage_NonNull(1) void
 Nucleus_DataLanguage_Context_deallocate
@@ -187,9 +186,9 @@ Nucleus_DataLanguage_Context_deallocate
         Nucleus_DataLanguage_Context *context,
         void *p
     )
-{ Nucleus_Interpreter_CoreContext_deallocate(NUCLEUS_INTERPRETER_CORECONTEXT(context->context), p); }
+{ Nucleus_Interpreter_ProcessContext_deallocate(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context->context), p); }
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_Object *
+Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() Nucleus_Interpreter_Object *
 Nucleus_DataLanguage_Context_allocateObject
     (
         Nucleus_DataLanguage_Context *context,

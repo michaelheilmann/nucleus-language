@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/DataLanguage/Import-Status.h"
 
 Nucleus_DataLanguage_Status Nucleus_DataLanguage_Status_toInternal(Nucleus_Interpreter_Status status)

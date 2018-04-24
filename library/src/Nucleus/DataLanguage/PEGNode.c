@@ -1,102 +1,7 @@
-#include "Nucleus/DataLanguage/PEGNode.h"
+// Copyright (c) Michael Heilmann 2018
+#include "Nucleus/DataLanguage/PEGNode-private.c.i"
 
-#include "Nucleus/DataLanguage/Scanner.h"
-#include "Nucleus/DataLanguage/Context.h"
-
-typedef enum DL_PEGNode_Kind DL_PEGNode_Kind;
-enum DL_PEGNode_Kind
-{
-    /// @brief A terminal node.
-    DL_PEGNode_Kind_Terminal,
-    /// @brief A terminal range node.
-    DL_PEGNode_Kind_TerminalRange,
-    /// @brief An ordered choice node.
-    DL_PEGNode_Kind_OrderedChoice,
-    /// @brief A difference node.
-    DL_PEGNode_Kind_Difference,
-}; // enum DL_PEGNode_Kind
-
-struct DL_PEGNode
-{
-    Nucleus_DataLanguage_Object _parent;
-    DL_PEGNode_Kind kind;
-    union
-    {
-        struct
-        {
-            Nucleus_DataLanguage_Symbol symbol;
-        } terminal;
-        struct
-        {
-            Nucleus_DataLanguage_Symbol first;
-            Nucleus_DataLanguage_Symbol last;
-        } terminalRange;
-        struct
-        {
-            DL_PEGNode *left;
-            DL_PEGNode *right;
-        } orderedChoice;
-        struct
-        {
-            DL_PEGNode *minuend;
-            DL_PEGNode *subtrahend;
-        } difference;
-    };
-};
-
-Nucleus_DataLanguage_NonNull() static void
-initializeTerminal
-    (
-        Nucleus_DataLanguage_Context *context,
-        DL_PEGNode *self,
-        Nucleus_DataLanguage_Symbol symbol
-    )
-{
-    self->kind = DL_PEGNode_Kind_Terminal;
-    self->terminal.symbol = symbol;
-}
-
-Nucleus_DataLanguage_NonNull() static void
-initializeTerminalRange
-    (
-        Nucleus_DataLanguage_Context *context,
-        DL_PEGNode *self,
-        Nucleus_DataLanguage_Symbol first,
-        Nucleus_DataLanguage_Symbol last
-    )
-{
-    self->kind = DL_PEGNode_Kind_TerminalRange;
-    self->terminalRange.first = first;
-    self->terminalRange.last = last;
-}
-
-Nucleus_DataLanguage_NonNull() static void
-initializeOrderedChoice
-    (
-        Nucleus_DataLanguage_Context *context,
-        DL_PEGNode *self,
-        DL_PEGNode *left,
-        DL_PEGNode *right
-    )
-{
-    self->kind = DL_PEGNode_Kind_OrderedChoice;
-    self->orderedChoice.left = left;
-    self->orderedChoice.right = right;
-}
-
-Nucleus_DataLanguage_NonNull() static void
-initializeDifference
-    (
-        Nucleus_DataLanguage_Context *context,
-        DL_PEGNode *self,
-        DL_PEGNode *minuend,
-        DL_PEGNode *subtrahend
-    )
-{
-    self->kind = DL_PEGNode_Kind_Difference;
-    self->difference.minuend = minuend;
-    self->difference.subtrahend = subtrahend;
-}
+typedef struct Nucleus_DataLanguage_SourceLocation Nucleus_DataLanguage_SourceLocation;
 
 Nucleus_DataLanguage_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminal
@@ -107,6 +12,8 @@ DL_PEGNode_createTerminal
 {
     DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeTerminal(context, self, symbol);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
@@ -120,6 +27,8 @@ DL_PEGNode_createTerminalRange
 {
     DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeTerminalRange(context, self, first, last);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
@@ -133,6 +42,8 @@ DL_PEGNode_createOrderedChoice
 {
     DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeOrderedChoice(context, self, left, right);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
@@ -146,6 +57,8 @@ DL_PEGNode_createDifference
 {
     DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
     initializeDifference(context, self, minuend, subtrahend);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
@@ -190,7 +103,6 @@ DL_PEGNode_test
         {
             Nucleus_DataLanguage_SourceLocation *s = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
 
-            Nucleus_DataLanguage_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
             bool result;
             result = DL_PEGNode_test(context, self->difference.minuend, scanner);
             if (!result)

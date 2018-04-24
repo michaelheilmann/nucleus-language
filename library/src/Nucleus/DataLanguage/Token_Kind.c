@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/DataLanguage/Token_Kind.h"
 
 #include "Nucleus/DataLanguage/Context.h"

@@ -1,5 +1,0 @@
-// Copyright (c) Michael Heilmann 2018
-#pragma once
-
-#include "Nucleus/Interpreter/String.h"
-#include "Nucleus/Interpreter/String-internal.h"

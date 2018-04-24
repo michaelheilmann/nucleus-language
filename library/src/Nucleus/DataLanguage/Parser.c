@@ -1,3 +1,4 @@
+// Copyright (c) Michael Heilmann 2018
 #include "Nucleus/DataLanguage/Parser-private.c.i"
 
 Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_Parser *
@@ -9,13 +10,8 @@ Nucleus_DataLanguage_Parser_create
 {
     Nucleus_DataLanguage_Parser *self = (Nucleus_DataLanguage_Parser *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(Nucleus_DataLanguage_Parser));
     initialize(context, self, scanner);
-    Nucleus_DataLanguage_Object_Type *type = Nucleus_DataLanguage_getOrCreateForeignType
-        (
-            context,
-            NULL,
-            NUCLEUS_DATALANGUAGE_OBJECT_VISIT(&visit)
-        );
-    Nucleus_DataLanguage_Object_setType(context, NUCLEUS_DATALANGUAGE_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
+    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
