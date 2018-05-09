@@ -1,7 +1,7 @@
-// Copyright (c) Michael Heilmann 2018
+// Copyright (c) 2018 Michael Heilmann
 #pragma once
 
-#include "Nucleus/DataLanguage/Forward.h"
+#include "Nucleus/DataLanguage/Import-Interpreter.h"
 
 /// @ingroup dl
 /// @brief An enumeration of DL token kinds.
@@ -59,9 +59,9 @@ enum Nucleus_DataLanguage_Token_Kind
 
 }; // enum Nucleus_DataLanguage_Token_Kind
 
-Nucleus_DataLanguage_NonNull() Nucleus_DataLanguage_String *
+Nucleus_Interpreter_NonNull() Nucleus_Interpreter_String *
 Nucleus_DataLanguage_Token_Kind_toString
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Token_Kind kind
     );

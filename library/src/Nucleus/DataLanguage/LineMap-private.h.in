@@ -2,8 +2,7 @@
 
 #include "Nucleus/DataLanguage/LineMap.h"
 
-#include "Nucleus/DataLanguage/Import-Symbol.h"
-#include "Nucleus/DataLanguage/Import-StringIterator.h"
+#include "Nucleus/DataLanguage/Import-Interpreter.h"
 #include "Nucleus/Memory.h"
 
 #define MAX_LINES (5012)

@@ -1,7 +1,11 @@
-// Copyright (c) Michael Heilmann 2018
-#include "Nucleus/DataLanguage/Import-Status.h"
+// Copyright (c) 2018 Michael Heilmann
+#include "Nucleus/DataLanguage/Import-Interpreter.h"
 
-Nucleus_DataLanguage_Status Nucleus_DataLanguage_Status_toInternal(Nucleus_Interpreter_Status status)
+Nucleus_DataLanguage_Status
+Nucleus_DataLanguage_Status_toInternal
+	(
+		Nucleus_Interpreter_Status status
+	)
 {
     switch (status)
     {

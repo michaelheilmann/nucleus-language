@@ -1,10 +1,9 @@
-// Copyright (c) Michael Heilmann 2018
+// Copyright (c) 2018 Michael Heilmann
 #pragma once
 
 #include "Nucleus/DataLanguage/PEGNode.h"
 
 #include "Nucleus/DataLanguage/Scanner.h"
-#include "Nucleus/DataLanguage/Context.h"
 
 static Nucleus_Interpreter_Type *g_type = NULL;
 
@@ -27,7 +26,7 @@ finalizeType
     (
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_Interpreter_Type *
+Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_Type *
 getOrCreateType
     (
         Nucleus_Interpreter_Context *context
@@ -40,12 +39,12 @@ struct DL_PEGNode
     {
         struct
         {
-            Nucleus_DataLanguage_Symbol symbol;
+            Nucleus_Interpreter_Symbol symbol;
         } terminal;
         struct
         {
-            Nucleus_DataLanguage_Symbol first;
-            Nucleus_DataLanguage_Symbol last;
+            Nucleus_Interpreter_Symbol first;
+            Nucleus_Interpreter_Symbol last;
         } terminalRange;
         struct
         {
@@ -60,36 +59,36 @@ struct DL_PEGNode
     };
 };
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeTerminal
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *self,
-        Nucleus_DataLanguage_Symbol symbol
+        Nucleus_Interpreter_Symbol symbol
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeTerminalRange
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *self,
-        Nucleus_DataLanguage_Symbol first,
-        Nucleus_DataLanguage_Symbol last
+        Nucleus_Interpreter_Symbol first,
+        Nucleus_Interpreter_Symbol last
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeOrderedChoice
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *self,
         DL_PEGNode *left,
         DL_PEGNode *right
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeDifference
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *self,
         DL_PEGNode *minuend,
         DL_PEGNode *subtrahend

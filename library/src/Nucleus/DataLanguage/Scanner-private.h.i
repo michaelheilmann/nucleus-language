@@ -1,11 +1,10 @@
-// Copyright (c) Michael Heilmann 2018
+// Copyright (c) 2018 Michael Heilmann
 #pragma once
 
 #include "Nucleus/DataLanguage/Scanner.h"
 #include "Nucleus/DataLanguage/Token.h"
 #include "Nucleus/DataLanguage/SourceIterator.h"
 #include "Nucleus/DataLanguage/PEGNode.h"
-#include "Nucleus/DataLanguage/Context.h"
 
 struct Nucleus_DataLanguage_Scanner
 {
@@ -49,22 +48,22 @@ struct Nucleus_DataLanguage_Scanner
 
 static Nucleus_Interpreter_Type *g_type = NULL;
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initialize
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *self,
         bool skipComments
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 visit
     (
         Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *self
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_Interpreter_Type *
+Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_Type *
 getOrCreateType
     (
         Nucleus_Interpreter_Context *context
@@ -75,54 +74,68 @@ finalizeType
     (
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_String *
+Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_String *
 processStringLiteral
     (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_String *stringLiteral
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_String *stringLiteral
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 increment
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *scanner
     );
 
-Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_Symbol
+Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_Symbol
 current
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *scanner
     );
 
-Nucleus_DataLanguage_NonNull() static bool
+Nucleus_Interpreter_NonNull() static bool
 test
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *scanner,
         DL_PEGNode *pegNode
     );
 
-Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_String *
+Nucleus_Interpreter_NoReturn() Nucleus_Interpreter_NonNull() static void
+raiseLexicalError
+	(
+        Nucleus_Interpreter_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
+	);
+
+Nucleus_Interpreter_NonNull() static Nucleus_DataLanguage_SourceLocation *
+getSourceLocation
+    (
+        Nucleus_Interpreter_Context *context,
+        Nucleus_DataLanguage_Scanner *scanner
+    );
+
+Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_String *
 getLexeme
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *scanner,
         Nucleus_DataLanguage_SourceLocation *begin,
         Nucleus_DataLanguage_SourceLocation *end
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 scanExponent
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *scanner
     );
 
-Nucleus_DataLanguage_NonNull() static Nucleus_DataLanguage_Token *
+Nucleus_Interpreter_NonNull() static Nucleus_DataLanguage_Token *
 scan
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Scanner *scanner
     );

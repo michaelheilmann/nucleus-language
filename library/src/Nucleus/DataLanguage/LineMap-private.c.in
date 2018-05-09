@@ -6,7 +6,7 @@ finalizeType
     )
 { g_type = NULL; }
     
-Nucleus_ReturnNonNull() static Nucleus_Interpreter_Type *
+Nucleus_Interpreter_ReturnNonNull() static Nucleus_Interpreter_Type *
 getOrCreateType
     (
         Nucleus_Interpreter_Context *context

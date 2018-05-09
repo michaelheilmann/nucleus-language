@@ -1,27 +1,29 @@
 #pragma once
 
 #include "Nucleus/DataLanguage/AST/Node.h"
-#include "Nucleus/DataLanguage/Context.h"
 
 struct Nucleus_DataLanguage_AST_Node
 {
     Nucleus_DataLanguage_AST_NodeKind kind;
     union
     {
-        Nucleus_DataLanguage_Boolean booleanValue;
-        Nucleus_DataLanguage_Integer integerValue;
-        Nucleus_DataLanguage_Real realValue;
-        Nucleus_DataLanguage_String *stringValue;
-        Nucleus_DataLanguage_Void voidValue;
+        Nucleus_Interpreter_Boolean booleanValue;
+        Nucleus_Interpreter_Integer integerValue;
+        Nucleus_Interpreter_Real realValue;
+        Nucleus_Interpreter_String *stringValue;
+        Nucleus_Interpreter_Void voidValue;
     };
+	Nucleus_DataLanguage_AST_Node **children;
 }; // struct Nucleus_DataLanguage_AST_Node
+
+static Nucleus_Interpreter_Type *g_arrayType = NULL;
 
 static Nucleus_Interpreter_Type *g_type = NULL;
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 visit
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node
     );
 
@@ -30,83 +32,77 @@ finalizeType
     (
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_Interpreter_Type *
-getOrCreateType
-    (
-        Nucleus_Interpreter_Context *context
-    );
-
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeUnitNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeListNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeListElementNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeStructureNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeStructureElementNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeBooleanNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node,
-        Nucleus_DataLanguage_Boolean booleanValue
+        Nucleus_Interpreter_Boolean booleanValue
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeIntegerNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node,
-        Nucleus_DataLanguage_Integer integerValue
+        Nucleus_Interpreter_Integer integerValue
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeRealNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node,
-        Nucleus_DataLanguage_Real realValue
+        Nucleus_Interpreter_Real realValue
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeStringNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node,
-        Nucleus_DataLanguage_String *stringValue
+        Nucleus_Interpreter_String *stringValue
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initializeVoidNode
     (
-        Nucleus_DataLanguage_Context *context,
+		Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_AST_Node *node,
-        Nucleus_DataLanguage_Void voidValue
+        Nucleus_Interpreter_Void voidValue
     );
