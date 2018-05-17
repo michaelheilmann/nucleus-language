@@ -1,10 +1,10 @@
-// Copyright (c) Michael Heilmann 2018
+// Copyright (c) 2018 Michael Heilmann
 #include "Nucleus/DataLanguage/Token-private.h.i"
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 visit
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Token *self
     )
 {}
@@ -15,7 +15,7 @@ finalizeType
     )
 { g_type = NULL; }
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_Interpreter_Type *
+Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_Type *
 getOrCreateType
     (
         Nucleus_Interpreter_Context *context
@@ -34,15 +34,15 @@ getOrCreateType
     return g_type;
 }
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initialize
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_Token *self,
         Nucleus_DataLanguage_Token_Kind kind,
         Nucleus_DataLanguage_SourceLocation *begin,
         Nucleus_DataLanguage_SourceLocation *end,
-        Nucleus_DataLanguage_String *text
+        Nucleus_Interpreter_String *text
     )
 {
     self->kind = kind;

@@ -1,21 +1,20 @@
-// Copyright (c) Michael Heilmann 2018
+// Copyright (c) 2018 Michael Heilmann
 #pragma once
 
 #include "Nucleus/DataLanguage/SourceLocation.h"
-#include "Nucleus/DataLanguage/Context.h"
 
 static Nucleus_Interpreter_Type *g_type = NULL;
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 initialize
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         Nucleus_DataLanguage_SourceLocation *self,
         Nucleus_DataLanguage_Source *source,
         size_t offset
     );
 
-Nucleus_DataLanguage_NonNull() static void
+Nucleus_Interpreter_NonNull() static void
 visit
     (
         Nucleus_Interpreter_Context *context,
@@ -27,7 +26,7 @@ finalizeType
     (
     );
 
-Nucleus_DataLanguage_ReturnNonNull() Nucleus_DataLanguage_NonNull() static Nucleus_Interpreter_Type *
+Nucleus_Interpreter_ReturnNonNull() Nucleus_Interpreter_NonNull() static Nucleus_Interpreter_Type *
 getOrCreateType
     (
         Nucleus_Interpreter_Context *context

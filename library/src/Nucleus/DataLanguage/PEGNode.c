@@ -1,72 +1,72 @@
-// Copyright (c) Michael Heilmann 2018
+// Copyright (c) 2018 Michael Heilmann
 #include "Nucleus/DataLanguage/PEGNode-private.c.i"
 
 typedef struct Nucleus_DataLanguage_SourceLocation Nucleus_DataLanguage_SourceLocation;
 
-Nucleus_DataLanguage_NonNull() DL_PEGNode *
+Nucleus_Interpreter_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminal
     (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_Symbol symbol
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_Symbol symbol
     )
 {
-    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_Interpreter_Context_allocateManaged(context, sizeof(DL_PEGNode));
     initializeTerminal(context, self, symbol);
-    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
-    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context);
+    Nucleus_Interpreter_Object_setType(context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
-Nucleus_DataLanguage_NonNull() DL_PEGNode *
+Nucleus_Interpreter_NonNull() DL_PEGNode *
 DL_PEGNode_createTerminalRange
     (
-        Nucleus_DataLanguage_Context *context,
-        Nucleus_DataLanguage_Symbol first,
-        Nucleus_DataLanguage_Symbol last
+        Nucleus_Interpreter_Context *context,
+        Nucleus_Interpreter_Symbol first,
+        Nucleus_Interpreter_Symbol last
     )
 {
-    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_Interpreter_Context_allocateManaged(context, sizeof(DL_PEGNode));
     initializeTerminalRange(context, self, first, last);
-    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
-    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context);
+    Nucleus_Interpreter_Object_setType(context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
-Nucleus_DataLanguage_NonNull() DL_PEGNode *
+Nucleus_Interpreter_NonNull() DL_PEGNode *
 DL_PEGNode_createOrderedChoice
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *left,
         DL_PEGNode *right
      )
 {
-    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_Interpreter_Context_allocateManaged(context, sizeof(DL_PEGNode));
     initializeOrderedChoice(context, self, left, right);
-    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
-    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context);
+    Nucleus_Interpreter_Object_setType(context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
-Nucleus_DataLanguage_NonNull() DL_PEGNode *
+Nucleus_Interpreter_NonNull() DL_PEGNode *
 DL_PEGNode_createDifference
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *minuend,
         DL_PEGNode *subtrahend
      )
 {
-    DL_PEGNode *self = (DL_PEGNode *)Nucleus_DataLanguage_Context_allocateObject(context, sizeof(DL_PEGNode));
+    DL_PEGNode *self = (DL_PEGNode *)Nucleus_Interpreter_Context_allocateManaged(context, sizeof(DL_PEGNode));
     initializeDifference(context, self, minuend, subtrahend);
-    Nucleus_Interpreter_Type *type = getOrCreateType(context->context);
-    Nucleus_Interpreter_Object_setType(context->context, NUCLEUS_INTERPRETER_OBJECT(self), type);
+    Nucleus_Interpreter_Type *type = getOrCreateType(context);
+    Nucleus_Interpreter_Object_setType(context, NUCLEUS_INTERPRETER_OBJECT(self), type);
     return self;
 }
 
 
-Nucleus_DataLanguage_NonNull() bool
+Nucleus_Interpreter_NonNull() bool
 DL_PEGNode_test
     (
-        Nucleus_DataLanguage_Context *context,
+        Nucleus_Interpreter_Context *context,
         DL_PEGNode *self,
         Nucleus_DataLanguage_Scanner *scanner
     )
@@ -76,8 +76,8 @@ DL_PEGNode_test
         case DL_PEGNode_Kind_Terminal:
         {
             Nucleus_DataLanguage_SourceLocation *s = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
-            Nucleus_DataLanguage_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
-            bool result = Nucleus_DataLanguage_Symbol_equalTo(context, self->terminal.symbol, symbol);
+            Nucleus_Interpreter_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
+            bool result = Nucleus_Interpreter_Symbol_equalTo(context, self->terminal.symbol, symbol);
             if (!result)
             {
                 Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s);
@@ -87,9 +87,9 @@ DL_PEGNode_test
         case DL_PEGNode_Kind_TerminalRange:
         {
             Nucleus_DataLanguage_SourceLocation *s = Nucleus_DataLanguage_Scanner_getSourceLocation(context, scanner);
-            Nucleus_DataLanguage_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
-            bool result = Nucleus_DataLanguage_Symbol_lowerThanOrEqualTo(context, self->terminalRange.first, symbol)
-                       && Nucleus_DataLanguage_Symbol_lowerThanOrEqualTo(context, symbol, self->terminalRange.last);
+            Nucleus_Interpreter_Symbol symbol = Nucleus_DataLanguage_Scanner_getSymbol(context, scanner);
+            bool result = Nucleus_Interpreter_Symbol_lowerThanOrEqualTo(context, self->terminalRange.first, symbol)
+                       && Nucleus_Interpreter_Symbol_lowerThanOrEqualTo(context, symbol, self->terminalRange.last);
             if (!result)
             {
                 Nucleus_DataLanguage_Scanner_setSourceLocation(context, scanner, s);
@@ -128,6 +128,10 @@ DL_PEGNode_test
             return true;
         }
         default:
-            Nucleus_DataLanguage_Context_raiseError(context, Nucleus_DataLanguage_Status_UnreachableCodeReached);
+		{
+            Nucleus_Interpreter_ProcessContext_setStatus(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context),
+			                                             Nucleus_Interpreter_Status_UnreachableCodeReached);
+			Nucleus_Interpreter_ProcessContext_jump(NUCLEUS_INTERPRETER_PROCESSCONTEXT(context));
+		}
     };
 }
