@@ -1,6 +1,5 @@
-# Copyright (c) 2017, 2018 Michael Heilmann
-
-# Minimum required CMake version.
+# Copyright (c) 2017 - 2018 Michael Heilmann
+# Assert minimum CMake version.
 cmake_minimum_required(VERSION 3.8)
 
 # Include the "Nucleus" build system.
@@ -25,6 +24,8 @@ define_module(Nucleus.Language)
 if (NOT NUCLEUS_INCLUDED)
   set(Nucleus-With-Optimizations ${Nucleus.Language-With-Optimizations})
   set(Nucleus-With-Debug-Information ${Nucleus.Language-With-Debug-Information})
+  set(Nucleus-With-Pthreads ${Nucleus.Language-With-Pthreads})
+  set(Nucleus-With-Static-Runtime ${Nucleus.Language-With-Static-Runtime})
   add_subdirectory(${NUCLEUS_PATH})
   set(NUCLEUS_INCLUDED YES)
 endif()
@@ -36,6 +37,8 @@ endif()
 if (NOT NUCLEUS_INTERPRETER_INCLUDED)
   set(Nucleus.Interpreter-With-Optimizations ${Nucleus.Language-With-Optimizations})
   set(Nucleus.Interpreter-With-Debug-Information ${Nucleus.Language-With-Debug-Information})
+  set(Nucleus.Interpreter-With-Pthreads ${Nucleus.Language-With-Pthreads})
+  set(Nucleus.Interpreter-With-Static-Runtime ${Nucleus.Language-With-Static-Runtime})
   add_subdirectory(${NUCLEUS_INTERPRETER_PATH})
   set(NUCLEUS_INTERPRETER_INCLUDED YES)
 endif()
